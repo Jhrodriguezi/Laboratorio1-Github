@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>Pelisplus - Login</title>
+    <link rel="icon" href="/resources/src/bxs-movie.svg">
+    <link rel="stylesheet" href="/resources/src/main.css">
+</head>
+<body class="body_register">
+    <div class="title">
+        <h1 class="project_title">Pelisline</h1>
+    </div>
+    <div class="container">
+        <form class="form" id="createAccount" method="POST" action="/register">
+            <h1 class="form__title">Create Account</h1>
+            <div class="form__message form__message--error"></div>
+            <div class="form__input-group">
+                <input name="nickname" tag="input-registration" type="text" id="signupUsername" class="form__input" autofocus placeholder="Username">
+                <div class="text_input_form"></div>
+            </div>
+            <div class="form__input-group">
+                <input name="email" type="email" tag="input-registration" id="signupEmail" class="form__input" autofocus placeholder="Email Address">
+                <div class="text_input_form"></div>
+            </div>
+            <div class="form__input-group">
+                <input tag="input-registration" name="password" id="signupPassword" type="password" class="form__input" autofocus placeholder="Password">
+                <div class="text_input_form"></div>
+            </div>
+            <div class="form__input-group">
+                <input tag="input-registration" name="password2" id="signupPassword2" type="password" class="form__input" autofocus placeholder="Confirm password">
+                <div class="text_input_form"></div>
+            </div>
+            <button class="form__button" type="submit">Continue</button>
+            <p class="form__text">
+                <a class="form__link" href="/login-form" id="linkLogin">Already have an account? Sign in</a>
+            </p>
+        </form>
+    </div>
+    <script src="/resources/js/validate_registration_form.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <% if(typeof alert != "undefined") { %>
+        <script>
+            Swal.fire({
+                title: '<%= alertTitle %>',
+                text: '<%= alertMessage %>',
+                icon: '<%= alertIcon %>',
+                showConfirmButton: <%=showConfirmButton%>,
+                timer: <%=timer%>,
+            }).then(() => {
+                window.location='/<%= ruta %>'
+            })
+        </script>
+    <% } %>
+</body>
+</html>

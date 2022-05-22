@@ -12,7 +12,26 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 18px;
-    background: url(./background.jpg); /* source: https://unsplash.com/es/fotos/atsUqIm3wxo*/
+    background: url(/resources/src/background.jpg); /* source: https://unsplash.com/es/fotos/atsUqIm3wxo*/
+    background-size: cover;
+    flex-direction: column;
+}
+
+.body_register{
+    --color-primary: #009579;
+    --color-primary-dark: #007f67;
+    --color-secondary: #252c6a;
+    --color-error: #cc3333;
+    --color-success: #4bb544;
+    --border-radius: 4px;
+
+    margin: 0;
+    height: 150vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background: url(/resources/src/background.jpg); /* source: https://unsplash.com/es/fotos/atsUqIm3wxo*/
     background-size: cover;
     flex-direction: column;
 }
@@ -37,7 +56,6 @@ body {
     border-radius: var(--border-radius);
     background: #ffffff;
 }
-
 .container,
 .form__input,
 .form__button {
@@ -104,6 +122,12 @@ body {
     margin-top: 0.5rem;
     font-size: 0.85rem;
     color: var(--color-error);
+}
+
+.form__input-success-message{
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-success);
 }
 
 .form__button {

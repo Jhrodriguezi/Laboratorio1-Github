@@ -15,16 +15,16 @@ https://templatemo.com/tm-520-highway
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/fontAwesome.css">
-        <link rel="stylesheet" href="css/light-box.css">
-        <link rel="stylesheet" href="css/templatemo-style.css">
+        <link rel="icon" href="/resources/src/bxs-movie.png">
+        <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/resources/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/resources/css/fontAwesome.css">
+        <link rel="stylesheet" href="/resources/css/light-box.css">
+        <link rel="stylesheet" href="/resources/css/templatemo-style.css">
 
         <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
 
-        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+        <script src="/resources/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
 
 <body>    
@@ -39,10 +39,21 @@ https://templatemo.com/tm-520-highway
                     <td style="width: 50%;">
                         <h1 style="color: #FFFFFF;">PELISLINE</h1>
                     </td>
-        
-                    <td style="width: 50%; text-align: right;">
-                        <button type="button" class="btn btn-secondary">Cerrar Sesion</button>
+                    <% if(login){ %>
+                    <td style="width:50%; text-align:right;padding-bottom: 10px;padding-right: 50px;">
+                        <h2><%=name%></h2>
                     </td>
+                    <td style="width: 50%; text-align: right;">
+                        <button type="button" class="btn btn-secondary"><a style="text-decoration: none;" href="/logout">Cerrar Sesion</a></button>
+                    </td>
+                    <% }else{ %>
+                        <td style="width: 50%; text-align: right;padding-right: 50px;">
+                            <button type="button" class="btn btn-secondary"><a style="text-decoration: none;" href="/login-form" >Iniciar sesion</a></button>
+                        </td>
+                        <td style="width: 50%; text-align: right;">
+                            <button type="button" class="btn btn-secondary"><a style="text-decoration: none;" href="/register-form">Registrarse</a></button>
+                        </td>
+                    <% } %>
                 </tr>
         
             </table>
@@ -52,14 +63,14 @@ https://templatemo.com/tm-520-highway
                 <div class="col-md-4 col-sm-6" style="text-align: left;">
                     <div class="portfolio-item">
                         <div class="thumb">
-                            <a href="img/big_portfolio_item_4.png" data-lightbox="image-1"><div class="hover-effect">
+                            <a href="/resources/img/big_portfolio_item_4.png" data-lightbox="image-1"><div class="hover-effect">
                                 <div class="hover-content">
                                     <h1>Harry Potter <em>la primera</em></h1>
                                     <p>una mas de la saga</p>
                                 </div>
                             </div></a>
-                            <div class="image">
-                                <img src="img/portfolio_item_4.png">
+                            <div class="image" style="width: 350px;height: 550px;">
+                                <img src="/resources/img/portfolio_item_4.png" height="100%">
                             </div>
                         </div>
                     </div>
@@ -67,14 +78,14 @@ https://templatemo.com/tm-520-highway
                 <div class="col-md-4 col-sm-6" style="text-align: center;">
                     <div class="portfolio-item">
                         <div class="thumb">
-                            <a href="img/big_portfolio_item_2.png" data-lightbox="image-1"><div class="hover-effect">
+                            <a href="/resources/img/big_portfolio_item_2.png" data-lightbox="image-1"><div class="hover-effect">
                                 <div class="hover-content">
                                     <h1>raclette <em>taxidermy</em></h1>
                                     <p>Awesome Subtittle Goes Here</p>
                                 </div>
                             </div></a>
-                            <div class="image">
-                                <img src="img/portfolio_item_2.png">
+                            <div class="image" style="width: 350px;height: 550px;">
+                                <img src="/resources/img/portfolio_item_2.png" height="100%">
                             </div>
                         </div>
                     </div>
@@ -82,14 +93,14 @@ https://templatemo.com/tm-520-highway
                 <div class="col-md-4 col-sm-6" style="text-align: right;">
                     <div class="portfolio-item">
                         <div class="thumb">
-                            <a href="img/big_portfolio_item_3.png" data-lightbox="image-1"><div class="hover-effect">
+                            <a href="/resources/img/big_portfolio_item_3.png" data-lightbox="image-1"><div class="hover-effect">
                                 <div class="hover-content">
                                     <h1>humblebrag <em>brunch</em></h1>
                                     <p>Awesome Subtittle Goes Here</p>
                                 </div>
                             </div></a>
-                            <div class="image">
-                                <img src="img/portfolio_item_3.png">
+                            <div class="image" style="width: 350px;height: 550px;">
+                                <img src="/resources/img/portfolio_item_3.png" height="100%">
                             </div>
                         </div>
                     </div>
@@ -115,10 +126,10 @@ https://templatemo.com/tm-520-highway
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
-    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="/resources/js/vendor/bootstrap.min.js"></script>
     
-    <script src="js/plugins.js"></script>
-    <script src="js/main.js"></script>
+    <script src="/resources/js/plugins.js"></script>
+    <script src="/resources/js/main.js"></script>
 
 </body>
 </html>

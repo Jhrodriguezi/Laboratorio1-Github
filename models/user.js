@@ -127,10 +127,24 @@ class User{
         let result = [];
         let res = await client.query(sql, values);
         res.rows.forEach(element => {
-            result.push(new user(element.id, element.nickname, element.correo, element.password, element.tipousuario));
+            result.push(new User(element.id, element.nickname, element.correo, element.password, element.tipousuario));
+        });
+        client.release(true);
+        return result;
+    }
+
+    async selectByNickOrEmailUser(emailOrNickname){
+        let client = await connection.connect();
+        let sql = "SELECT * FROM usuario where nickname=$1 or correo=$2";
+        let values = [emailOrNickname, emailOrNickname];
+        let result = [];
+        let res = await client.query(sql, values);
+        res.rows.forEach(element => {
+            result.push(new User(element.id, element.nickname, element.correo, element.password, element.tipousuario));
         });
         client.release(true);
         return result;
     }
 }
+
 module.exports = User;
