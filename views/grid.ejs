@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>USUARIO</title>
+        <title>Pelisplus - Peliculas y reseñas </title>
 <!-- 
 
 Highway Template
@@ -46,13 +46,6 @@ https://templatemo.com/tm-520-highway
                     <td style="width: 50%; text-align: right;">
                         <button type="button" class="btn btn-secondary"><a style="text-decoration: none;" href="/logout">Cerrar Sesion</a></button>
                     </td>
-                    <% }else{ %>
-                        <td style="width: 50%; text-align: right;padding-right: 50px;">
-                            <button type="button" class="btn btn-secondary"><a style="text-decoration: none;" href="/login-form" >Iniciar sesion</a></button>
-                        </td>
-                        <td style="width: 50%; text-align: right;">
-                            <button type="button" class="btn btn-secondary"><a style="text-decoration: none;" href="/register-form">Registrarse</a></button>
-                        </td>
                     <% } %>
                 </tr>
         
@@ -122,7 +115,23 @@ https://templatemo.com/tm-520-highway
 
         </div>
     </div>
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <% if(typeof alert != "undefined") { %>
+        <script>
+            Swal.fire({
+                title: '<strong><%= alertTitle %></strong>',
+                icon: '<%= alertIcon %>',
+                html:'<h6><%= alertMessage %></h6>',
+                showCloseButton: true,
+                showCancelButton: false,
+                focusConfirm: false,
+                showConfirmButton: <%=showConfirmButton%>,
+                timer: <%=timer%>,
+            }).then(() => {
+                window.location='/<%= ruta %>'
+            })
+        </script>
+    <% } %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 

@@ -82,6 +82,5 @@ inputs.forEach((input)=>{
 formulario.addEventListener('submit', (e) =>{
     if(!(campos.nickname && campos.email && campos.password)){
         e.preventDefault();
-        console.log("XDD")
     }
 })
