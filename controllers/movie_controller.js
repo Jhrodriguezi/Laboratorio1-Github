@@ -10,7 +10,7 @@ async function masPopulares() {
 async function buscar(name){
     //Construir la URL
     var urlP1= 'https://api.themoviedb.org/3/search/movie?api_key=8813b9c1e58f9f780d35e52b0ae8f38c&language=es-MX&query='
-    var urlP2= '&page=1&include_adult=false'
+    var urlP2= '&page=1'
     name = name.replaceAll(' ','%20')      
     var url = urlP1 + name + urlP2
     //Retornar lista de peliculas
@@ -65,4 +65,3 @@ async function requestKey(url) {
         console.error(err)
     }
 }
-g
