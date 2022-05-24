@@ -25,6 +25,7 @@ https://templatemo.com/tm-520-highway
         <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
 
         <script src="/resources/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
     </head>
 
 <body>    
@@ -41,7 +42,7 @@ https://templatemo.com/tm-520-highway
                     </td>
                     <% if(login){ %>
                     <td style="width:50%; text-align:right;padding-bottom: 10px;padding-right: 50px;">
-                        <h2><%=name%></h2>
+                        <h2 style="color: gainsboro;"><%=name%></h2>
                     </td>
                     <td style="width: 50%; text-align: right;">
                         <button type="button" class="btn btn-secondary"><a style="text-decoration: none;" href="/logout">Cerrar Sesion</a></button>
@@ -103,18 +104,23 @@ https://templatemo.com/tm-520-highway
             <form>
                 <div class="form-group" style="text-align: left; color: #FFFFFF;">
                   <label for="exampleInputEmail1">Buscar pelicula</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search">
+                  <input type="text" class="form-control" id="BusquedaPelicula" aria-describedby="emailHelp" placeholder="Search">
                   <small id="emailHelp" class="form-text text-muted"">esperemos que exista :3</small>
                 </div>
-
+<!--
                 <div style="text-align: center;">
-                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <button class="btn btn-primary">Buscar</button>
                 </div>
+-->
 
               </form>
 
+              <div id="ResultadoBusqueda" style="text-align: center;">
+              </div>
+
         </div>
     </div>
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <% if(typeof alert != "undefined") { %>
         <script>
@@ -132,6 +138,7 @@ https://templatemo.com/tm-520-highway
             })
         </script>
     <% } %>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
@@ -139,6 +146,12 @@ https://templatemo.com/tm-520-highway
     
     <script src="/resources/js/plugins.js"></script>
     <script src="/resources/js/main.js"></script>
+    <script type="module" src="/resources/js/class VistaManager.js"></script>
+
+    <script src="/controlador/movie_controller.js"></script>
+
+
+    
 
 </body>
 </html>
