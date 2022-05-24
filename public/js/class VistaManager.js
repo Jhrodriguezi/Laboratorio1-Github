@@ -77,29 +77,34 @@ const resolve = (event) => {
         //const lista = buscar(event.target.value);
         //console.log(lista);
 
-        inner += `<h1>Resultados de la busqueda (${event.target.value})</h1>`;
+        inner += `<h1 style="color:white;">Resultados de la busqueda (${event.target.value})</h1>`;
         
         //aca deberia ir el codigo para buscar en la base de datos y agregar las pelis a la lista en frontend
+        inner+=`<div class="row align-items-start">`;
         buscar(event.target.value)
             .then(result => {
                 result.forEach(movie => {
-                    
+                    if(!movie.overview){
+                      movie.overview = "Sin resumen."
+                    }
 
-                    inner += `<div class="card" style="width: 18rem; float:right;">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <a href="${"/search?id="+movie.id}" id ="${"seleccionadaBusqueda"+movie.title}"><h5 class="card-title">${movie.title}</h5></a>
-                        <p class="card-text">${movie.overview}</p>
+                    inner += `<div class="col col-md-4 col-sm-6" style="text-align: left;">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <a href="${"/search?id="+movie.id}" id ="${"seleccionadaBusqueda"+movie.title}"><div class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>${movie.title}</h1>
+                                    <p>${movie.overview}</p>
+                                </div>
+                            </div></a>
+                            <div class="image">
+                                <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" style="height:570px">
+                            </div>
+                        </div>
                     </div>
-                    </div>`; 
-
-                    `<div style="width:100%;">
-                        <a href="${"/search?id="+movie.id}" id ="${"seleccionadaBusqueda"+movie.title}"><h3>${movie.title}</h3></a>
-                        <br>
-                        <p style="color-font:white;">${movie.overview}</p>
-                        <hr class="border-primary border-3 opacity-75">
-                    </div>`
+                </div>`;
                 })
+                inner+=`</div>`;
                 resultadoBusqueda.innerHTML = inner;
             })
             .catch(err => console.log(err))
