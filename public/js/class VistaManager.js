@@ -67,10 +67,9 @@ async function requestKey(url) {
 
 const busquedaPelicula = document.getElementById("BusquedaPelicula");
 const resultadoBusqueda = document.getElementById("ResultadoBusqueda");
-
-const resolve = (event) => {
+let tiempoInicial = Date.now();
+const resolve = (event,busqueda = "") => {
     let inner = "";
-    let busqueda = "";
     if (event.target.value.length > 0) {
         //console.log(event.target.value);
         //const lista = buscar(event.target.value);
@@ -125,18 +124,20 @@ const resolve = (event) => {
     }
     resultadoBusqueda.innerHTML = inner;
     busqueda = event.target.value;
-
-    let tiempoInicial = date.now();
-    let tiempoFinal = date.now();
+    tiempoInicial = Date.now();
+    //console.log("antes del timeout");
     
     setTimeout(function(){
-        tiempoInicial = date.now();
-        if(tiempoInicial - tiempoFinal > 10000){
-            console.log("Tiempo de busqueda: ", (tiempoFinal - tiempoInicial));
-            console.log("se guardo la busqueda", busqueda);
+        //console.log("tiempo inicial: " + tiempoInicial);
+        if(tiempoInicial + 10000 <= Date.now()){
+           //console.log("Tiempo de busqueda: ", (tiempoInicial - Date.now()));
+            //codigo para guardar la busqueda en la base de datos nueva
+
+            //base2.guardar(usuario, busqueda);
+
+            window.alert('Se "guardo" la busqueda: '+ busqueda);
         }
     }, 10100);
 }
-
 
 busquedaPelicula.addEventListener("keyup", resolve);
