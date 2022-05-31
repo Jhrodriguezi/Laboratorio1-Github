@@ -70,6 +70,7 @@ const resultadoBusqueda = document.getElementById("ResultadoBusqueda");
 
 const resolve = (event) => {
     let inner = "";
+    let busqueda = "";
     if (event.target.value.length > 0) {
         //console.log(event.target.value);
         //const lista = buscar(event.target.value);
@@ -123,6 +124,18 @@ const resolve = (event) => {
         inner += `<h1>Escribe algo!</h1>`;
     }
     resultadoBusqueda.innerHTML = inner;
+    busqueda = event.target.value;
+
+    let tiempoInicial = date.now();
+    let tiempoFinal = date.now();
+    
+    setTimeout(function(){
+        tiempoInicial = date.now();
+        if(tiempoInicial - tiempoFinal > 10000){
+            console.log("Tiempo de busqueda: ", (tiempoFinal - tiempoInicial));
+            console.log("se guardo la busqueda", busqueda);
+        }
+    }, 10100);
 }
 
 
