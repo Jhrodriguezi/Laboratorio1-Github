@@ -15,10 +15,10 @@ async function crearbdLog(){
     client.query(`create table log(
         id              serial primary key,
         usuario         varchar(30),
-        fecha           varchar(50),
+        fecha           timestamp,
         operacion       varchar(60),
-        idPelicula      varchar(30),
-        accion          varchar(30)
+        idPelicula      bigint,
+        accion          varchar(60)
         );`
     ).then(response => {
     console.log("Se ha creado la tabla log")
