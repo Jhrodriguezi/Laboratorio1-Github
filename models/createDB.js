@@ -2,6 +2,23 @@ const pool = require('./db');
 async function crearbd(){
     let client = await pool.connect();
 
+    // eliminar trigger denunciar en reseña
+    client.query(`drop trigger if exists denunciar on reseña;`).then(response => {
+        console.log("Se ha eliminado el trigger denunciar en reseña")
+    })
+    .catch(err => {
+        console.log("ERROR")
+        client.end()
+    })
+
+    // eliminar trigger denunciac en comentario
+    client.query(`drop trigger if exists denunciac on comentario;`).then(response => {
+        console.log("Se ha eliminado el trigger denunciac en comentario")
+    })
+    .catch(err => {
+        console.log("ERROR")
+        client.end()
+    })
     // eliminar tabla comentario
     client.query(`drop table if exists comentario;`).then(response => {
         console.log("Se ha eliminado la tabla comentario")
@@ -97,6 +114,7 @@ async function crearbd(){
                         denuncias       integer,
                         fechaPub        timestamp,
                         puntuacion      decimal,
+                        visible         boolean,
                         idUsuario       bigint REFERENCES usuario(id) ON DELETE CASCADE ON UPDATE CASCADE,    
                         idPelicula      bigint REFERENCES pelicula(id) ON DELETE CASCADE ON UPDATE CASCADE 
                         );`
@@ -116,11 +134,50 @@ async function crearbd(){
         dislikes        integer,
         denuncias       integer,
         fechaPub        timestamp,
+        visible         boolean,
         idUsuario       bigint REFERENCES usuario(id) ON DELETE CASCADE ON UPDATE CASCADE,    
         idReseña        bigint REFERENCES reseña(id) ON DELETE CASCADE ON UPDATE CASCADE 
         );`
     ).then(response => {
     console.log("Se ha creado la tabla comentario")
+    })
+    .catch(err => {
+    console.log("ERROR")
+    client.end()
+    })
+
+    // crear trigger denunciar en reseña
+    client.query(`  create or replace function udenunciar() returns trigger as $denunciar$
+                    declare
+                    begin
+                        if(new.denuncias >= 20) then
+                            new.visible := false;
+                            return new;
+                        end if;
+                    end;
+                    $denunciar$ LANGUAGE plpgsql;
+                    create trigger denunciar after update on reseña for each row execute procedure udenunciar();`
+    ).then(response => {
+    console.log("Se ha creado el trigger denunciar en reseña")
+    })
+    .catch(err => {
+    console.log("ERROR")
+    client.end()
+    })
+    
+    // crear trigger denunciac en comentario
+    client.query(`  create or replace function udenunciac() returns trigger as $denunciac$
+                    declare
+                    begin
+                        if(new.denuncias >= 20) then
+                            new.visible := false;
+                            return new;
+                        end if;
+                    end;
+                    $denunciac$ LANGUAGE plpgsql;
+                    create trigger denunciac after update on comentario for each row execute procedure udenunciac();`
+    ).then(response => {
+    console.log("Se ha creado el trigger denunciac en comentario")
     client.end()
     })
     .catch(err => {
