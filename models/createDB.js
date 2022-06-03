@@ -107,7 +107,6 @@ async function crearbd(){
         console.log("ERROR")
         client.end()
     })
-    
     // crear tabla comentario
     client.query(`create table comentario(
         id              serial primary key,
@@ -129,4 +128,4 @@ async function crearbd(){
     })
 }
 
-crearbd().then(()=>{console.log("exito")}).catch();
+crearbd().then(()=>{console.log("exito")}).catch(e => console.log(e));

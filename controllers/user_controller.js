@@ -31,7 +31,7 @@ const user_functions = {
                     alertIcon: 'success',
                     showConfirmButton: false,
                     timer: 3500,
-                    ruta: ''
+                    ruta: 'home'
                 });
             }
         }
@@ -50,7 +50,7 @@ const user_functions = {
                 alertIcon: 'error',
                 showConfirmButton: true,
                 timer: false,
-                ruta: 'login-form'
+                ruta: ''
             });
         }else{
             if(!(await bcrypt.compare(password, users[0].password))){
@@ -61,7 +61,7 @@ const user_functions = {
                     alertIcon: 'error',
                     showConfirmButton: true,
                     timer: false,
-                    ruta: 'login-form'
+                    ruta: ''
                 });
             }else{
                 req.session.loggedin = true;
@@ -74,7 +74,7 @@ const user_functions = {
                     alertIcon: 'success',
                     showConfirmButton: false,
                     timer: 3000,
-                    ruta: ''
+                    ruta: 'home'
                 });
             }
         }
@@ -96,7 +96,7 @@ const user_functions = {
                 alertIcon: 'info',
                 showConfirmButton: true,
                 timer: false,
-                ruta: 'login-form'
+                ruta: ''
             });
         } 
     }   

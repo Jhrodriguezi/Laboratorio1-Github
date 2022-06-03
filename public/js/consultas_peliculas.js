@@ -82,22 +82,28 @@ const resolve = (event) => {
         buscar(event.target.value)
             .then(result => {
                 result.forEach(movie => {
+                  let image = "/resources/img/imagen_no_disponible.png";
                     if(!movie.overview){
-                      movie.overview = "Sin resumen."
+                      movie.overview = "Sin resumen.";
+                    }else{
+                      movie.overview = (movie.overview).slice(0,40).trim()+"...";
+                    }
+                    if(movie.poster_path){
+                      image = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
                     }
 
                     inner += `<div class="col col-md-4 col-sm-6" style="text-align: left;">
                     <div class="portfolio-item">
                         <div class="thumb">
                             <a href="${"/search?id="+movie.id}" id ="${"seleccionadaBusqueda"+movie.title}"><div class="hover-effect">
-                                <div class="hover-content">
-                                    <h1>${movie.title}</h1>
+                                <div class="hover-content" style="max-width: 400px; min-width:350px; margin-bottom:5%;">
+                                    <h1 style="line-height:1">${movie.title}</h1><br>
                                     <p>${movie.overview}</p>
                                 </div>
-                            </div></a>
-                            <div class="image">
-                                <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" style="height:570px">
                             </div>
+                            <div class="image">
+                                <img src="${image}" style="height: 573px; max-width: 400px; min-width:350px;">
+                            </div></a>
                         </div>
                     </div>
                 </div>`;

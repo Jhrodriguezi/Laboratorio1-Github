@@ -1,14 +1,22 @@
 const main_functions = {
     cerrarSesion: (req, res) =>{
         req.session.destroy(() => {
-            res.redirect('/login-form');
+            res.redirect('/');
         })
     },
     cargarFormularioRegistro: (req, res)=>{
+      if(req.session.loggedin){
+            res.redirect(200, '/home');
+      }else{
         res.render("register");
+      }
     },
     cargarFormularioLogin: (req, res)=>{
-        res.render("login");
+        if(req.session.loggedin){
+            res.redirect(200, '/home');
+        }else{
+          res.render("login");
+        }
     },
 }
 

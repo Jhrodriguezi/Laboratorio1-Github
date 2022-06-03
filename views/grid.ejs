@@ -46,7 +46,7 @@ https://templatemo.com/tm-520-highway
                         <h2 style="color: gainsboro;"><%=name%></h2>
                     </td>
                     <td style="width: 50%; text-align: right;">
-                        <button type="button" class="btn btn-secondary"><a style="text-decoration: none;" href="/logout">Cerrar Sesion</a></button>
+                        <a style="text-decoration: none;" href="/logout"><button type="button" class="btn btn-secondary">Cerrar Sesion</button></a>
                     </td>
                     <% } %>
                 </tr>
@@ -57,13 +57,13 @@ https://templatemo.com/tm-520-highway
                     <div class="portfolio-item">
                         <div class="thumb">
                             <a href="/resources/img/big_portfolio_item_4.png"><div class="hover-effect">
-                                <div class="hover-content">
+                                <div class="hover-content" style="max-width: 400px; min-width:350px; margin-bottom:5%;">
                                     <h1>Harry Potter <em>la primera</em></h1>
                                     <p>una mas de la saga</p>
                                 </div>
                             </div></a>
                             <div class="image">
-                                <img src="/resources/img/portfolio_item_4.png" height="570px">
+                                <img src="/resources/img/portfolio_item_4.png" height="570px" style="max-width: 400px;">
                             </div>
                         </div>
                     </div>
@@ -72,13 +72,13 @@ https://templatemo.com/tm-520-highway
                     <div class="portfolio-item">
                         <div class="thumb">
                             <a href="/resources/img/big_portfolio_item_2.png"><div class="hover-effect">
-                                <div class="hover-content">
+                                <div class="hover-content" style="max-width: 400px; min-width:350px; margin-bottom:5%;">
                                     <h1>Doctor strange</h1>
                                     <p>La ultima</p>
                                 </div>
                             </div></a>
                             <div class="image">
-                                <img src="/resources/img/portfolio_item_2.png" height="570px">
+                                <img src="/resources/img/portfolio_item_2.png" height="570px" style="max-width: 400px;">
                             </div>
                         </div>
                     </div>
@@ -87,19 +87,19 @@ https://templatemo.com/tm-520-highway
                     <div class="portfolio-item">
                         <div class="thumb">
                             <a href="/resources/img/big_portfolio_item_3.png"><div class="hover-effect">
-                                <div class="hover-content">
+                                <div class="hover-content" style="max-width: 400px; min-width:350px; margin-bottom:5%;">
                                     <h1>Shrek</h1>
                                     <p>El viejo verde</p>
                                 </div>
                             </div></a>
                             <div class="image">
-                                <img src="/resources/img/portfolio_item_3.png" height="570px">
+                                <img src="/resources/img/portfolio_item_3.png" height="570px" style="max-width: 400px;">
                             </div>
                         </div>
                     </div>
                 </div>                
             </div>
-            <form>
+            <form action="javascript:void(0);">
                 <div class="form-group" style="text-align: left; color: #FFFFFF;">
                   <label for="exampleInputEmail1">Buscar pelicula</label>
                   <input type="text" class="form-control" id="BusquedaPelicula" aria-describedby="emailHelp" placeholder="Search">
@@ -145,7 +145,7 @@ https://templatemo.com/tm-520-highway
     <script src="/resources/js/plugins.js"></script>
     <script src="/resources/js/main.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script type="module" src="/resources/js/class VistaManager.js"></script>
+    <script type="module" src="/resources/js/consultas_peliculas.js"></script>
     
 
 </body>
