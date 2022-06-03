@@ -21,20 +21,20 @@ async function peliculaById(id){
   let Url = 'https://api.themoviedb.org/3/movie/'+id+'?api_key=77c55698b8c9956169a37ddda45c6409&language=es-MX';
   let result = await requestKey(Url);
   let movie = {
-                adult: result['results']['adult'],
-                backdrop_path: result['results']['backdrop_path'],
-                genre_ids: result['results']['genre_ids'],
-                id: result['results']['id'],
-                original_language: result['results']['original_language'],
-                original_title: result['results']['original_title'],
-                overview: result['results']['overview'],
-                popularity: result['results']['popularity'],
-                poster_path: result['results']['poster_path'],
-                release_date: result['results']['release_date'],
-                title: result['results']['title'],
-                video: result['results']['video'],
-                vote_average: result['results']['vote_average'],
-                vote_count: result['results']['vote_count']
+                adult: result['adult'],
+                backdrop_path: result['backdrop_path'],
+                genre_ids: result['genre_ids'],
+                id: result['id'],
+                original_language: result['original_language'],
+                original_title: result['original_title'],
+                overview: result['overview'],
+                popularity: result['popularity'],
+                poster_path: result['poster_path'],
+                release_date: result['release_date'],
+                title: result['title'],
+                video: result['video'],
+                vote_average: result['vote_average'],
+                vote_count: result['vote_count']
             };
   return movie;
 }

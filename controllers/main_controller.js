@@ -6,14 +6,14 @@ const main_functions = {
     },
     cargarFormularioRegistro: (req, res)=>{
       if(req.session.loggedin){
-            res.redirect(200, '/home');
+            res.redirect('/home');
       }else{
         res.render("register");
       }
     },
     cargarFormularioLogin: (req, res)=>{
         if(req.session.loggedin){
-            res.redirect(200, '/home');
+            res.redirect('/home');
         }else{
           res.render("login");
         }
