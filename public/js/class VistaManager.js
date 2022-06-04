@@ -134,8 +134,9 @@ const resolve = (event,busqueda = "") => {
             //codigo para guardar la busqueda en la base de datos nueva
 
             //base2.guardar(usuario, busqueda);
-
-            window.alert('Se "guardo" la busqueda: '+ busqueda);
+            const cosiato = document.getElementById("cosiato");
+            let nombre = cosiato.innerHTML;
+            window.alert('Se "guardo" la busqueda: '+ busqueda + " de: "+ nombre);
         }
     }, 10100);
 }
