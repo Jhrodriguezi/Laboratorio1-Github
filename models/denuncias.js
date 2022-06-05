@@ -10,13 +10,26 @@ const connectionData = {
 
 const pool = new Pool(connectionData);
 
-async function denunciar(id) {
+async function denunciarResena(id) {
     let sql = "SELECT denuncias FROM resena"
     let res = await pool.query(sql);
     res.rows.forEach(element => {
         let result = element.denuncias + 1
         const query = `
             UPDATE resena
+            SET denuncias = ` + result + `
+            WHERE id=` + id
+        pool.query(query)
+    })    
+}
+
+async function denunciarComment(id) {
+    let sql = "SELECT denuncias FROM comentario"
+    let res = await pool.query(sql);
+    res.rows.forEach(element => {
+        let result = element.denuncias + 1
+        const query = `
+            UPDATE comentario
             SET denuncias = ` + result + `
             WHERE id=` + id
         pool.query(query)
