@@ -11,8 +11,8 @@ async function crearbd(){
         client.end()
     })
     // eliminar tabla reseña
-    client.query(`drop table if exists reseña;`).then(response => {
-        console.log("Se ha eliminado la tabla reseña")
+    client.query(`drop table if exists resena;`).then(response => {
+        console.log("Se ha eliminado la tabla resena")
     })
     .catch(err => {
         console.log("ERROR")
@@ -88,7 +88,7 @@ async function crearbd(){
     })
     
     // crear tabla reseña
-    client.query(`create table reseña(
+    client.query(`create table resena(
                         id              serial primary key,
                         encabezado      varchar(50),
                         contenido       text,
@@ -101,7 +101,7 @@ async function crearbd(){
                         idPelicula      bigint REFERENCES pelicula(id) ON DELETE CASCADE ON UPDATE CASCADE 
                         );`
     ).then(response => {
-        console.log("Se ha creado la tabla reseña")
+        console.log("Se ha creado la tabla resena")
     })
     .catch(err => {
         console.log("ERROR")
