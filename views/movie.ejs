@@ -6,7 +6,7 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
       <title>Pelisline</title>
       <meta name="description" content="">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="apple-touch-icon" href="apple-touch-icon.png">
       <link rel="icon" href="/resources/src/bxs-movie.png">
       <link rel="stylesheet" href="/resources/css/bootstrap.css">
@@ -15,74 +15,185 @@
       <link rel="stylesheet" href="/resources/css/fontAwesome.css">
       <link rel="stylesheet" href="/resources/css/light-box.css">
       <link rel="stylesheet" href="/resources/css/templatemo-style.css">
-      <link rel="stylesheet" href="/resources/css/reseña.css">
    </head>
    <body style="background-color: #232323;">
-      <div class="grid-portfolio" id="portfolio" style="width: 100%; height:100%;">
+    <div style="background-color: #313131; width: 100%;">
       <div class="container">
-      <table style="width: 100%;">
-         <tr style="width: 100%;">
-            <td style="width: 50%;">
-               <button class="btn home">PELISLINE</button>
-            </td>
-            <% if(login){ %>
-            <td style="width:50%; text-align:right;padding-bottom: 10px;padding-right: 50px;">
-               <h2 style="color: gainsboro;">
-                  <%=name%>
-               </h2>
-            </td>
-            <td style="width: 50%; text-align: right;">
-               <button type="button" class="btn btn-secondary"><a style="text-decoration: none;"
-                  href="/logout">Cerrar Sesion</a></button>
-            </td>
-            <% } %>
-         </tr>
-      </table>
-      <div class="container">
-                <table style="width: 100%;">
-                    <tr style="width: 100%;">
-                        <td style="width: 50%;">
-                            <h2 style="color: #FFFFFF; display: inline ;">Reseñando: </h2>
-                            <h2 style="color: #FFFFFF; display: inline ;">Nombre de Pelicula </h2>
-                        </td>
-                    </tr>
-                </table>
-              <div class="row">
-               <div class="col-md-4 col-sm-6" style="text-align: left;">
-                  <div class="portfolio-item">
-                     <div class="thumb">
-                        <a href="/resources/img/big_portfolio_item_4.png">
-                           <div class="hover-effect">
-                              <div class="hover-content" style="max-width: 400px; min-width:350px; margin-bottom:5%;">
-                                 <h1>Harry Potter <em>la primera</em></h1>
-                                 <p>una mas de la saga</p>
-                              </div>
-                           </div>
-                        </a>
-                        <div class="image">
-                           <img src="/resources/img/portfolio_item_4.png" height="570px" style="max-width: 400px;">
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-4 col-sm-6" style="text-align: center;">
-                  <div class="portfolio-item">
-                     <div class="thumb">
-                        <a href="/resources/img/big_portfolio_item_2.png">
-                           <div class="hover-effect">
-                              <div class="hover-content" style="max-width: 400px; min-width:350px; margin-bottom:5%;">
-                                 <h1>Doctor strange</h1>
-                                 <p>La ultima</p>
-                              </div>
-                           </div>
-                        </a>
-                        <div class="image">
-                           <img src="/resources/img/portfolio_item_2.png" height="570px" style="max-width: 400px;">
-                        </div>
-                     </div>
+         <table style="width: 100%;">
+            <tr style="width: 100%;">
+               <td style="width: 50%;">
+                  <a href="/home" style="text-decoration:none;">
+                     <h1 style="color: #FFFFFF;">PELISLINE</h1>
+                  </a>
+               </td>
+               <% if(login){ %>
+               <td style="width:50%; text-align:right;padding-bottom: 10px;padding-right: 50px;">
+                  <h2 style="color: gainsboro;"><%=name%></h2>
+               </td>
+               <td style="width: 50%; text-align: right;">
+                  <a style="text-decoration: none;" href="/logout"><button type="button" class="btn btn-secondary">Cerrar Sesion</button></a>
+               </td>
+               <% } %>
+            </tr>
+         </table>
+      </div>
+    </div>
+      <% if(movie){ %>
+      <script>console.log(name)</script>
+      <div class="container" style="margin-top:80px;">
+         <div class="row row-cols-2">
+            <div class="col col-md-4 col-sm-6" style="text-align: left; width:50%;">
+               <div class="portfolio-item">
+                  <div class="image">
+                     <img src="<%=movie.poster_path%>">
                   </div>
                </div>
             </div>
+            <div class="col col-md-4 col-sm-6" style="text-align: left; width:50%; min-width:500px;">
+               <div>
+                  <div>
+                     <span style="color:white;">
+                        <h2 style="color: #FFFFFF; display: inline ;"><%=movie.title%></h2>
+                        <br><br>
+                        <p style="color:white;"><%=movie.overview%></p>
+                        <table style="width: 100%;">
+                           <tr>
+                              <td>
+                                 <h3>Idioma original</h3>
+                                 <p><%=movie.original_language%></p>
+                              </td>
+                              <td>
+                                 <h3>Generos</h3>
+                                 <p><%=movie.genres%></p>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>
+                                 <h3>Titulo original</h3>
+                                 <p><%=movie.original_title%></p>
+                              </td>
+                              <td>
+                                 <h3>Fecha de estreno</h3>
+                                 <p><%=movie.release_date%></p>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>
+                                 <h3>Puntuacion promedio</h3>
+                                 <p><%=movie.vote_average%>/5</p>
+                              </td>
+                              <td>
+                                 <h3>Numero de reseñas</h3>
+                                 <p><%=movie.num_reviews%></p>
+                              </td>
+                           </tr>
+                        </table>
+                     </span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <hr noshade="noshade" size="2" width="80%" />
+         <div class="d-grid gap-2">
+            <a href="/resena-form?id=<%=movie.id%>" style="text-decoration:none;"><button style="width:100%;" class="btn btn-primary" type="button" style="text-align:center;">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+               </svg>
+               Agregar reseña
+            </button></a>
+         </div>
+         <hr noshade="noshade" size="2" width="80%" />
+        <% if(reviews.length==0){ %>
+         <h1 style="text-align: center; color:white;margin-top: 80px;">NO HAY RESEÑAS PARA ESTA PELICULA :(</h1>
+          <% }else{ %>
+         <div id="div_reviews" class="row row-cols-1" style="margin-bottom: 20px; border: 10px solid #313131; border-radius: 20px; color:white; background-color:#313131;">
+           <script>
+             let inner ="";
+             let div_reviews = document.getElementById("div_reviews");
+             reviews.forEach(review => {
+               
+              inner+=`<div class="col" style="margin:0px 20px 20px 20px; padding:0px 20px 20px 20px;">
+               <div class="row row-cols-2">
+                  <div class="col">
+                     <h2>${review.encabezado}</h2>
+                     <h4>${review.idusuario}</h4>
+                     <p>${review.fechapub}</p>
+                  </div>
+                  <div class="col">
+                     <p>${review.puntuacion}/5</p>
+                  </div>
+               </div>
+               <div class="row row-cols-1">
+                  <div class="col">
+                     <p>${review.contenido}</p>
+                  </div>
+               </div>
+               <div class="btn-group" role="group" aria-label="Basic mixed styles example" style="float:right;">
+                  <button type="button" class="btn btn-success">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
+                        <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2.144 2.144 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a9.84 9.84 0 0 0-.443.05 9.365 9.365 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111L8.864.046zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a8.908 8.908 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.224 2.224 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.866.866 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
+                     </svg>
+                  </button>
+                  <button type="button" class="btn btn-danger">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-down" viewBox="0 0 16 16">
+                        <path d="M8.864 15.674c-.956.24-1.843-.484-1.908-1.42-.072-1.05-.23-2.015-.428-2.59-.125-.36-.479-1.012-1.04-1.638-.557-.624-1.282-1.179-2.131-1.41C2.685 8.432 2 7.85 2 7V3c0-.845.682-1.464 1.448-1.546 1.07-.113 1.564-.415 2.068-.723l.048-.029c.272-.166.578-.349.97-.484C6.931.08 7.395 0 8 0h3.5c.937 0 1.599.478 1.934 1.064.164.287.254.607.254.913 0 .152-.023.312-.077.464.201.262.38.577.488.9.11.33.172.762.004 1.15.069.13.12.268.159.403.077.27.113.567.113.856 0 .289-.036.586-.113.856-.035.12-.08.244-.138.363.394.571.418 1.2.234 1.733-.206.592-.682 1.1-1.2 1.272-.847.283-1.803.276-2.516.211a9.877 9.877 0 0 1-.443-.05 9.364 9.364 0 0 1-.062 4.51c-.138.508-.55.848-1.012.964l-.261.065zM11.5 1H8c-.51 0-.863.068-1.14.163-.281.097-.506.229-.776.393l-.04.025c-.555.338-1.198.73-2.49.868-.333.035-.554.29-.554.55V7c0 .255.226.543.62.65 1.095.3 1.977.997 2.614 1.709.635.71 1.064 1.475 1.238 1.977.243.7.407 1.768.482 2.85.025.362.36.595.667.518l.262-.065c.16-.04.258-.144.288-.255a8.34 8.34 0 0 0-.145-4.726.5.5 0 0 1 .595-.643h.003l.014.004.058.013a8.912 8.912 0 0 0 1.036.157c.663.06 1.457.054 2.11-.163.175-.059.45-.301.57-.651.107-.308.087-.67-.266-1.021L12.793 7l.353-.354c.043-.042.105-.14.154-.315.048-.167.075-.37.075-.581 0-.211-.027-.414-.075-.581-.05-.174-.111-.273-.154-.315l-.353-.354.353-.354c.047-.047.109-.176.005-.488a2.224 2.224 0 0 0-.505-.804l-.353-.354.353-.354c.006-.005.041-.05.041-.17a.866.866 0 0 0-.121-.415C12.4 1.272 12.063 1 11.5 1z"/>
+                     </svg>
+                  </button>
+                  <button type="button" class="btn btn-primary">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
+                        <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                        <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                     </svg>
+                  </button>
+                  <button type="button" class="btn btn-warning">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                        <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
+                        <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/>
+                     </svg>
+                  </button>
+               </div>
+            </div>
+         </div>`;});
+        div_reviews.innerHtml = inner;
+        </script>
+      </div>
+      <% } %>
+      <% } %>
         </div>
+      <div class="footer-dark" style="margin-top:80px; width:100%;">
+        <footer class="footer-07">
+           <div class="container">
+              <div class="row mt-5">
+                 <div class="col-md-12 text-center">
+                    <p class="copyright">
+                       Copyright ©<script>document.write(new Date().getFullYear());</script> All rights reserved | This page is made with 
+                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                          <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                       </svg>
+                       by <a target="_blank">PURO PEKA PA</a>
+                    </p>
+                 </div>
+              </div>
+           </div>
+        </footer>
+     </div>
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <% if(typeof alert != "undefined") { %>
+      <script>
+         Swal.fire({
+             title: '<strong><%= alertTitle %></strong>',
+             icon: '<%= alertIcon %>',
+             html:'<h6><%= alertMessage %></h6>',
+             showCloseButton: true,
+             showCancelButton: false,
+             focusConfirm: false,
+             showConfirmButton: <%=showConfirmButton%>,
+             timer: <%=timer%>,
+         }).then(() => {
+             window.location='/<%= ruta %>'
+         })
+      </script>
+      <% } %>
    </body>
 </html>

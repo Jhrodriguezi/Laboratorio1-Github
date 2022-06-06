@@ -19,12 +19,14 @@
       <script src="/resources/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
    </head>
    <body style="background-color: #232323;">
-      <div class="grid-portfolio" id="portfolio" style="width: 100%; height:100%;">
+      <div style="background-color: #313131; width: 100%;">
          <div class="container">
             <table style="width: 100%;">
                <tr style="width: 100%;">
                   <td style="width: 50%;">
-                     <h1 style="color: #FFFFFF;">PELISLINE</h1>
+                     <a href="/home" style="text-decoration:none;">
+                        <h1 style="color: #FFFFFF;">PELISLINE</h1>
+                     </a>
                   </td>
                   <% if(login){ %>
                   <td style="width:50%; text-align:right;padding-bottom: 10px;padding-right: 50px;">
@@ -36,8 +38,16 @@
                   <% } %>
                </tr>
             </table>
+         </div>
+      </div>
+      <div class="container">
+         <div class="grid-portfolio" id="portfolio" style="width: 100%; height:100%; padding: 20px 0px;">
             <div class="row align-items-start" id="div_movies_popular">
             </div>
+         </div>
+      </div>
+      <div class="container">
+         <div class="grid-portfolio" id="portfolio" style="width: 100%; height:100%; padding: 10px 0px;">
             <form action="javascript:void(0);">
                <div class="form-group" style="text-align: left; color: #FFFFFF;">
                   <label for="exampleInputEmail1">Buscar pelicula</label>
@@ -48,6 +58,23 @@
             <div id="ResultadoBusqueda" style="text-align: center;">
             </div>
          </div>
+      </div>
+      <div class="footer-dark" style="margin-top:80px;">
+         <footer class="footer-07">
+            <div class="container">
+               <div class="row mt-5">
+                  <div class="col-md-12 text-center">
+                     <p class="copyright">
+                        Copyright ©<script>document.write(new Date().getFullYear());</script> All rights reserved | This page is made with 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                           <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                        </svg>
+                        by <a target="_blank">PURO PEKA PA'</a>
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </footer>
       </div>
       <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <% if(typeof alert != "undefined") { %>

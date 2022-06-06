@@ -16,14 +16,14 @@
     align-self:center;
 }
 
-.btn {
+/*.btn {
    border: none;
    background-color: inherit;
    padding: 10px 2rem;
    font-size:40px;
    cursor: pointer;
    display: inline-block;
- }
+ }*/
  
  .btn:hover{
     color:#FFF;
