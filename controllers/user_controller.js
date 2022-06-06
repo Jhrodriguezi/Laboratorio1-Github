@@ -43,8 +43,7 @@ const user_functions_user = {
                     ruta: 'home'
                 });
             }
-        }
-        
+        }    
     },
     loginUser: async (req, res) => {
         let email_or_nickname = req.body.emailOrNickname;

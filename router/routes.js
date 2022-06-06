@@ -14,6 +14,7 @@ routes.get('/home', user_controller.verificarLogin);
 routes.get("/register-form", main_controller.cargarFormularioRegistro);
 //Eliminar la sesion y redirecciona al usuario a la pagina inicial.
 routes.get('/logout', main_controller.cerrarSesion);
+
 //Obtiene la informacion de una pelicula a partir de un id
 routes.get('/search', movie_controller.cargarPelicula);
 //Toma un nombre y obtiene las peliculas que concuerden con el nombre.

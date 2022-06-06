@@ -1,4 +1,4 @@
-const pool = require('./dbLog');
+const pool = require('./db_log');
 async function crearbdLog(){
     let client = await pool.connect();
 
@@ -18,7 +18,7 @@ async function crearbdLog(){
         fecha           timestamp,
         operacion       varchar(60),
         idPelicula      bigint,
-        accion          varchar(60)
+        accion          text
         );`
     ).then(response => {
     console.log("Se ha creado la tabla log")

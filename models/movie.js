@@ -58,7 +58,7 @@ async function requestKey(url) {
 const functions_movie = {
   masPopulares: async () => {
     //Construir la url
-    var url = 'https://api.themoviedb.org/3/movie/popular?api_key=8813b9c1e58f9f780d35e52b0ae8f38c&language=es_MX'
+    var url = 'https://api.themoviedb.org/3/movie/popular?api_key=8813b9c1e58f9f780d35e52b0ae8f38c&language=es-MX'
     //Retornar lista de peliculas
     return await getPelicula(url)
   },

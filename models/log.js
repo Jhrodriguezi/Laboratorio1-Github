@@ -91,9 +91,6 @@ const functions_log = {
     if (log_object.getNickname && log_object.getOperacion && log_object.getAccion) {
       let client = await connection.connect();
       let sql = "INSERT INTO log (usuario, fecha, operacion, idpelicula, accion) VALUES ($1, now(), $2, $3, $4)";
-      if (log_object.getIdpelicula) {
-        log_object.setIdpelicula = -1;
-      }
       let values = [log_object.getNickname, log_object.getOperacion, log_object.getIdpelicula, log_object.getAccion];
       res = await client.query(sql, values);
       client.release(true);
