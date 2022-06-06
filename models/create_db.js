@@ -105,7 +105,7 @@ async function crearbd(){
     })
     
     // crear tabla reseña
-    client.query(`create table reseña(
+    client.query(`create table resena(
                         id              serial primary key,
                         encabezado      varchar(50),
                         contenido       text,
