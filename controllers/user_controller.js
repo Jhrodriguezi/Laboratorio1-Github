@@ -2,7 +2,7 @@ const {User, functions_user} = require('../models/user');
 const {Log, functions_log} = require('../models/log'); 
 const bcrypt = require('bcrypt');
 
-const user_functions_user = {
+const user_functions_controller = {
     registrarUsuario: async (req, res) => {
         let newUser = new User(null, req.body.nickname, req.body.email, req.body.password);
         let result;
@@ -10,7 +10,7 @@ const user_functions_user = {
             result = await functions_user.insertUser(newUser);
         }catch(err){
             result = undefined;
-            res.render("register", {
+            res.render("intermedio", {
                 alert: true,
                 alertTitle: "Error",
                 alertMessage: "El correo y/o el nickname ya estan en uso",
@@ -30,10 +30,10 @@ const user_functions_user = {
                   console.log(e);
                 }
                 req.session.loggedin = true;
-                req.session.id = user.getId;
+                req.session.idusuario = user.getId;
                 req.session.name = user.getNickname;
                 req.session.role = user.getTipousuario;
-                res.render("register", {
+                res.render("intermedio", {
                     alert: true,
                     alertTitle: "Registro exitoso",
                     alertMessage: "¡Disfruta de la pagina!",
@@ -50,7 +50,7 @@ const user_functions_user = {
         let password = req.body.password;
         let users = await functions_user.selectByNickOrEmailUser(email_or_nickname);
         if(users.length==0){
-            res.render("login", {
+            res.render("intermedio", {
                 alert: true,
                 alertTitle: "Error",
                 alertMessage: "Cuenta inexistente",
@@ -61,7 +61,7 @@ const user_functions_user = {
             });
         }else{
             if(!(await bcrypt.compare(password, users[0].password))){
-                res.render("login", {
+                res.render("intermedio", {
                     alert: true,
                     alertTitle: "Error",
                     alertMessage: "Contraseña incorrecta",
@@ -72,12 +72,12 @@ const user_functions_user = {
                 });
             }else{
                 req.session.loggedin = true;
-                req.session.id = users[0].getId;
+                req.session.idusuario = users[0].getId;
                 req.session.name = users[0].getNickname;
                 req.session.role = users[0].getTipousuario;
                 let log = new Log(null, users[0].getNickname, null, 'Read user', null, 'Ha ingresado un usuario a la pagina web');
                 await functions_log.insertLog(log);
-                res.render("login", {
+                res.render("intermedio", {
                     alert: true,
                     alertTitle: "Conexión exitosa",
                     alertMessage: "¡Bienvenido!",
@@ -112,4 +112,4 @@ const user_functions_user = {
     },
 };
 
-module.exports = user_functions_user;
+module.exports = user_functions_controller;

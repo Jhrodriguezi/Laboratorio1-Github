@@ -3,7 +3,39 @@ const connection = require('./db');
 
 
 class Movie {
+  #id;
+  #puntuacion;
+  #nresenas;
 
+  constructor(id, puntuacion, nresenas) {
+    this.id = id;
+    this.puntuacion = puntuacion;
+    this.nresenas = nresenas;
+  }
+
+  get getId() {
+    return this.id;
+  }
+
+  set setId(id) {
+    this.id = id;
+  }
+
+  get getPuntuacion() {
+    return this.puntuacion;
+  }
+
+  set setPuntuacion(puntuacion) {
+    this.puntuacion = puntuacion;
+  }
+
+  get getNresenas() {
+    return this.nresenas;
+  }
+
+  set setNresenas(nresenas) {
+    this.nresenas = nresenas;
+  }
 }
 
 async function getPelicula(url) {
@@ -56,6 +88,42 @@ async function requestKey(url) {
 }
 
 const functions_movie = {
+  insertMovie: async (movie_object) => {
+    try {
+      let client = await connection.connect();
+      let sql = "INSERT INTO pelicula (id, puntuacion, nreseñas) values($1, $2, $3)";
+      let values = [movie_object.getId, movie_object.getPuntuacion, movie_object.getNresenas];
+      let result = await client.query(sql, values);
+      client.release(true);
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  SelectMovieById: async (id) => {
+    try {
+      let client = await connection.connect();
+      let sql = "SELECT * FROM pelicula WHERE id=$1";
+      let values = [id];
+      let result = await client.query(sql, values);
+      client.release(true);
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  updateMovie: async (movie_object) =>{
+    try {
+      let client = await connection.connect();
+      let sql = "UPDATE pelicula SET puntuacion=$1, nreseñas=$2 WHERE id=$3";
+      let values = [movie_object.getPuntuacion, movie_object.getNresenas, movie_object.getId];
+      let result = await client.query(sql, values);
+      client.release(true);
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
+  },
   masPopulares: async () => {
     //Construir la url
     var url = 'https://api.themoviedb.org/3/movie/popular?api_key=8813b9c1e58f9f780d35e52b0ae8f38c&language=es-MX'

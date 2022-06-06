@@ -28,7 +28,9 @@ const main_functions = {
     if (req.session.loggedin) {
       res.render("resena-formulario", {
         login: true,
-        name: req.session.name
+        name: req.session.name,
+        idusuario: req.session.idusuario,
+        idpelicula: req.query.id
       });
     } else {
       res.render("resena-formulario", {
@@ -40,7 +42,9 @@ const main_functions = {
         alertIcon: 'info',
         showConfirmButton: true,
         timer: false,
-        ruta: ''
+        ruta: '',
+        idusuario: null,
+        idpelicula: null
       });
     }
   }

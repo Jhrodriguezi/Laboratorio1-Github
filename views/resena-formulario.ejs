@@ -53,7 +53,9 @@
             </div>
          <div class="container" style="margin-top: 20px;">
             <div class="formulario-reseña">
-               <form method="post" action="/">
+               <form method="post" action="/resena_create">
+                  <input type="text" id="titulo" name="idpelicula" value="<%=idpelicula%>" style="display:none;" />
+                  <input type="text" id="titulo" name="idusuario" value="<%=idusuario%>" style="display:none;" />
                   <div>
                      <label for="Titulo reseña" style="width: 100%">
                      <span class="required">Titulo reseña: *</span>
@@ -64,14 +66,14 @@
                   <div>
                      <label for="Calificación" style="width: auto">
                      <span class="required">Calificación: *</span>
-                     <input type="number" id="Calificación" name="Calificación" value="" placeholder="valor / 5"
+                     <input type="number" id="calificacion" name="calificacion" value="" placeholder="valor / 5"
                         required="required" tabindex="2" min="0" max="5" class="Calificación" />
                      </label>
                   </div>
                   <div>
                      <label for="Contenido" style="width: 100%">
                      <span class="required">Contenido: *</span>
-                     <textarea id="Contenido" name="contenido" tabindex="3" required="required"
+                     <textarea id="contenido" name="contenido" tabindex="3" required="required"
                         placeholder="Maximo 1000 caracteres" maxlength="1000"></textarea>
                      </label>
                   </div>

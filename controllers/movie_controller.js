@@ -2,7 +2,7 @@ const { Movie, functions_movie } = require('../models/movie');
 const { Log, functions_log } = require('../models/log');
 const { Review, functions_review } = require('../models/review');
 
-async function checkData(movie) {
+async function checkDataMovie(movie) {
   if (!movie.title) {
     movie.title = "??";
   }
@@ -44,6 +44,7 @@ async function checkData(movie) {
 
   try {
     average = await functions_review.getAverageMovie(movie.id);
+    average = Math.round(average);
   } catch (e) {
     console.log(e);
   }
@@ -64,30 +65,40 @@ async function checkData(movie) {
   return movie;
 }
 
+function checkDataReview(r){
+  return r;
+}
 
-const movie_functions_movie = {
+
+const movie_functions_controller = {
   cargarPelicula: async (req, res) => {
-    let movie = {}, newLog, reviews = [];
+    let movie = {}, newLog, reviews;
     try {
       movie = await functions_movie.peliculaById(req.query.id);
       reviews = await functions_review.getAllReviewsByIdMovie(req.query.id);
+      for(let i = 0; i<reviews.length; i++){
+        reviews[i] = checkDataReview(reviews[i]);
+      }
       movie.num_reviews = reviews.length;
-      movie = await checkData(movie);
+      movie = await checkDataMovie(movie);
     } catch (e) {
       console.log(e);
     }
     if (req.session.loggedin) {
-      try{
-        newLog = new Log(null, req.session.name, null, "Read movie", movie.id, 'El usuario ha consultado la pelicula: ' + movie.title);
-        await functions_log.insertLog(newLog);
-      }catch(e){
-        console.log(e);
+      if(req.query.flag){
+        try{
+          newLog = new Log(null, req.session.name, null, "Read movie", movie.id, 'El usuario ha consultado la pelicula: ' + movie.title);
+          await functions_log.insertLog(newLog);
+          req.query.flag = false;
+        }catch(e){
+          console.log(e);
+        }
       }
       res.render("movie", {
         login: true,
         name: req.session.name,
-        movie: movie,
-        reviews: reviews
+        movie,
+        reviews,
       });
     } else {
       res.render("movie", {
@@ -100,8 +111,8 @@ const movie_functions_movie = {
         showConfirmButton: true,
         timer: false,
         ruta: '',
-        movie: movie,
-        reviews: reviews
+        movie,
+        reviews,
       });
     }
     //res.send(movie);
@@ -126,4 +137,4 @@ const movie_functions_movie = {
   }
 }
 
-module.exports = movie_functions_movie;
+module.exports = movie_functions_controller;

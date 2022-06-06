@@ -18,7 +18,7 @@ function getInner(movie) {
   inner += `<div class="col col-md-4 col-sm-6" style="text-align: left;">
                     <div class="portfolio-item">
                         <div class="thumb">
-                            <a href="${"/search?id=" + movie.id}" id ="${movie.id}"><div class="hover-effect">
+                            <a href="${"/search?id=" + movie.id+"&flag=true"}" id ="${movie.id}"><div class="hover-effect">
                                 <div class="hover-content" style="max-width: 400px; min-width:350px; margin-bottom:5%;">
                                     <h1 style="line-height:1">${movie.title}</h1><br>
                                     <p>${movie.overview}</p>

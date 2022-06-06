@@ -138,6 +138,18 @@ class Review {
 }
 
 const functions_review = {
+  insertReview: async (review_object)=>{
+    try {
+      let client = await connection.connect();
+      let sql = "INSERT INTO resena (encabezado, contenido, likes, dislikes, denuncias, fechapub, puntuacion, idusuario, idpelicula) values($1, $2, $3, $4, $5, now(), $6, $7, $8)";
+      let values = [review_object.getEncabezado, review_object.getContenido, review_object.getLikes, review_object.getDislikes, review_object.getDenuncias, review_object.getPuntuacion, review_object.getIdUsuario, review_object.getIdPelicula];
+      let result = await client.query(sql, values);
+      client.release(true);
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
+  },
   updateDenuncias: async (review_object) => {
     try {
       let client = await connection.connect();
@@ -166,7 +178,22 @@ const functions_review = {
       console.log(e);
     }
   },
-  //temporal, el promedio deberia guardarse en la bd en la tabla movie.
+  getCountReviewsByIdMovie: async (idpelicula) =>{
+    try {
+      let client = await connection.connect();
+      let sql = "SELECT count(*) as count FROM resena WHERE idpelicula=$1";
+      let values = [idpelicula];
+      let result, resp;
+      resp = await client.query(sql, values);
+      resp.rows.forEach(element => {
+        result = element.count;
+      });
+      client.release(true);
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
+  },
   getAverageMovie: async (idpelicula)=>{
     try {
       let client = await connection.connect();
