@@ -5,7 +5,6 @@ const {Movie, functions_movie} = require('../models/movie');
 const review_functions_controller = {
     agregarReview: async (req, res) => {
         let newReview = new Review(null, req.body.titulo, req.body.contenido, 0, 0, 0, null, req.body.calificacion, req.body.idusuario, req.body.idpelicula);
-        console.log(newReview);
         let newMovie;
         let result;
         try{
@@ -19,7 +18,6 @@ const review_functions_controller = {
                 puntuacion = 0;
               }
               newMovie = new Movie(req.body.idpelicula, puntuacion, nresenas);
-              console.log(newMovie);
               await functions_movie.insertMovie(newMovie);
             }else{
               nresenas = await functions_review.getCountReviewsByIdMovie(req.body.idpelicula);
@@ -28,7 +26,6 @@ const review_functions_controller = {
               newMovie = new Movie(req.body.idpelicula, puntuacion, nresenas);
               await functions_movie.updateMovie(newMovie);
             }
-            console.log(newMovie);
             result = await functions_review.insertReview(newReview);
         }catch(err){
             result = undefined;

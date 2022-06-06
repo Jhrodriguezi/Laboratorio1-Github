@@ -45,32 +45,8 @@ async function getPelicula(url) {
   //Realizar el request en la api
   try {
     var promise = await requestKey(url)
-    //Definir el tamaño de la lista de max 20 peliculas
-    promise['results'].length > 50 ? length = 50 : length = promise['results'].length
-    //Llenado de lista
-    for (var i = 0; i < length; i++) {
-      //Crear el objeto película
-      var movie = {
-        adult: promise['results'][i]['adult'],
-        backdrop_path: promise['results'][i]['backdrop_path'],
-        genre_ids: promise['results'][i]['genre_ids'],
-        id: promise['results'][i]['id'],
-        original_language: promise['results'][i]['original_language'],
-        original_title: promise['results'][i]['original_title'],
-        overview: promise['results'][i]['overview'],
-        popularity: promise['results'][i]['popularity'],
-        poster_path: promise['results'][i]['poster_path'],
-        release_date: promise['results'][i]['release_date'],
-        title: promise['results'][i]['title'],
-        video: promise['results'][i]['video'],
-        vote_average: promise['results'][i]['vote_average'],
-        vote_count: promise['results'][i]['vote_count']
-      }
-      //Ingresarlo a la lista
-      listMovies.push(movie)
-    }
     //Retornar la lista
-    return listMovies
+    return promise['results']
   } catch (err) {
     console.log(err);
     return undefined;
@@ -144,23 +120,7 @@ const functions_movie = {
   peliculaById: async (id) => {
     let Url = 'https://api.themoviedb.org/3/movie/' + id + '?api_key=77c55698b8c9956169a37ddda45c6409&language=es-MX';
     let result = await requestKey(Url);
-    let movie = {
-      adult: result['adult'],
-      backdrop_path: result['backdrop_path'],
-      genre_ids: result['genre_ids'],
-      id: result['id'],
-      original_language: result['original_language'],
-      original_title: result['original_title'],
-      overview: result['overview'],
-      popularity: result['popularity'],
-      poster_path: result['poster_path'],
-      release_date: result['release_date'],
-      title: result['title'],
-      video: result['video'],
-      vote_average: result['vote_average'],
-      vote_count: result['vote_count']
-    };
-    return movie;
+    return result;
   }
 }
 

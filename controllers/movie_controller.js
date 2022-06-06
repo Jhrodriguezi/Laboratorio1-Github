@@ -17,7 +17,7 @@ async function checkDataMovie(movie) {
     movie.original_language = "-";
   }
 
-  if (movie.genres) {
+  if(movie.genres.length>0) {
     let string = "";
     let flag = true;
     movie.genres.forEach(genre => {
