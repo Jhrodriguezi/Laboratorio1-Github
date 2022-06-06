@@ -1,12 +1,13 @@
-const User = require('../models/user');
+const {User, functions_user} = require('../models/user');
+const {Log, functions_log} = require('../models/log'); 
 const bcrypt = require('bcrypt');
 
-const user_functions = {
+const user_functions_user = {
     registrarUsuario: async (req, res) => {
         let newUser = new User(null, req.body.nickname, req.body.email, req.body.password);
-        let result = undefined;
+        let result;
         try{
-            result = await newUser.insertUser();
+            result = await functions_user.insertUser(newUser);
         }catch(err){
             result = undefined;
             res.render("register", {
@@ -21,9 +22,17 @@ const user_functions = {
         }
         if(result){
             if(result.rowCount==1){
+                try{
+                  let user = (await functions_user.selectByNickOrEmailUser(req.body.nickname))[0];
+                  let log = new Log(null, user.getNickname, null, 'Insert user', null, 'Se ha registrado un usuario en la pagina web');
+                  await functions_log.insertLog(log);
+                }catch(e){
+                  console.log(e);
+                }
                 req.session.loggedin = true;
-                req.session.id = (await newUser.selectByNickOrEmailUser(req.body.nickname))[0].getId;
-                req.session.name = req.body.nickname;
+                req.session.id = user.getId;
+                req.session.name = user.getNickname;
+                req.session.role = user.getTipousuario;
                 res.render("register", {
                     alert: true,
                     alertTitle: "Registro exitoso",
@@ -38,10 +47,9 @@ const user_functions = {
         
     },
     loginUser: async (req, res) => {
-        let emailOrNickname = req.body.emailOrNickname;
+        let email_or_nickname = req.body.emailOrNickname;
         let password = req.body.password;
-        let getUsers = new User();
-        let users = await getUsers.selectByNickOrEmailUser(emailOrNickname);
+        let users = await functions_user.selectByNickOrEmailUser(email_or_nickname);
         if(users.length==0){
             res.render("login", {
                 alert: true,
@@ -57,7 +65,7 @@ const user_functions = {
                 res.render("login", {
                     alert: true,
                     alertTitle: "Error",
-                    alertMessage: "Nickname/correo y/o password incorrectos",
+                    alertMessage: "Contraseña incorrecta",
                     alertIcon: 'error',
                     showConfirmButton: true,
                     timer: false,
@@ -67,6 +75,9 @@ const user_functions = {
                 req.session.loggedin = true;
                 req.session.id = users[0].getId;
                 req.session.name = users[0].getNickname;
+                req.session.role = users[0].getTipousuario;
+                let log = new Log(null, users[0].getNickname, null, 'Read user', null, 'Ha ingresado un usuario a la pagina web');
+                await functions_log.insertLog(log);
                 res.render("login", {
                     alert: true,
                     alertTitle: "Conexión exitosa",
@@ -99,7 +110,7 @@ const user_functions = {
                 ruta: ''
             });
         } 
-    }   
+    },
 };
 
-module.exports = user_functions;
+module.exports = user_functions_user;
