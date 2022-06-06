@@ -1,6 +1,7 @@
 const { Movie, functions_movie } = require('../models/movie');
 const { Log, functions_log } = require('../models/log');
 const { Review, functions_review } = require('../models/review');
+const { User, functions_user } = require('../models/user');
 
 async function checkDataMovie(movie) {
   if (!movie.title) {
@@ -65,7 +66,15 @@ async function checkDataMovie(movie) {
   return movie;
 }
 
-function checkDataReview(r){
+async function checkDataReview(r) {
+  let user;
+  try {
+    user = (await functions_user.selectByIdUser(r.getIdUsuario))[0];
+  } catch (e) {
+    console.log(e)
+  }
+  r.setIdUsuario = user.getNickname;
+  r.setFechapub = r.getFechapub.getDate()+"/"+(r.getFechapub.getMonth()+1)+"/"+r.getFechapub.getFullYear();
   return r;
 }
 
@@ -77,7 +86,7 @@ const movie_functions_controller = {
       movie = await functions_movie.peliculaById(req.query.id);
       reviews = await functions_review.getAllReviewsByIdMovie(req.query.id);
       for(let i = 0; i<reviews.length; i++){
-        reviews[i] = checkDataReview(reviews[i]);
+        reviews[i] = await checkDataReview(reviews[i]);
       }
       movie.num_reviews = reviews.length;
       movie = await checkDataMovie(movie);
@@ -85,12 +94,12 @@ const movie_functions_controller = {
       console.log(e);
     }
     if (req.session.loggedin) {
-      if(req.query.flag){
-        try{
+      if (req.query.flag) {
+        try {
           newLog = new Log(null, req.session.name, null, "Read movie", movie.id, 'El usuario ha consultado la pelicula: ' + movie.title);
           await functions_log.insertLog(newLog);
           req.query.flag = false;
-        }catch(e){
+        } catch (e) {
           console.log(e);
         }
       }
