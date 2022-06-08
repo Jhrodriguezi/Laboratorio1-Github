@@ -39,9 +39,6 @@ class Movie {
 }
 
 async function getPelicula(url) {
-  //Definición de variables
-  var listMovies = []
-  var length = 0
   //Realizar el request en la api
   try {
     var promise = await requestKey(url)

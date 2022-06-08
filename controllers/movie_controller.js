@@ -2,6 +2,7 @@ const { Movie, functions_movie } = require('../models/movie');
 const { Log, functions_log } = require('../models/log');
 const { Review, functions_review } = require('../models/review');
 const { User, functions_user } = require('../models/user');
+const { Comment, functions_comment} = require('../models/comment');
 
 async function checkDataMovie(movie) {
   if (!movie.title) {
@@ -17,7 +18,7 @@ async function checkDataMovie(movie) {
     movie.original_language = "-";
   }
 
-  if(movie.genres.length>0) {
+  if (movie.genres.length > 0) {
     let string = "";
     let flag = true;
     movie.genres.forEach(genre => {
@@ -74,24 +75,26 @@ async function checkDataReview(r) {
     console.log(e)
   }
   r.setIdUsuario = user.getNickname;
-  r.setFechapub = r.getFechapub.getDate()+"/"+(r.getFechapub.getMonth()+1)+"/"+r.getFechapub.getFullYear();
+  r.setFechapub = r.getFechapub.getDate() + "/" + (r.getFechapub.getMonth() + 1) + "/" + r.getFechapub.getFullYear();
+  r.comments = [{contenido:"askdjasdkñlas", fechapub:"07/06/2022", idusuario: "jhrodriguezi", likes:1, dislikes: 2, denuncias: 5}]
   return r;
 }
 
 
 const movie_functions_controller = {
   cargarPelicula: async (req, res) => {
-    let movie = {}, newLog, reviews;
+    let movie, newLog, reviews;
     try {
       movie = await functions_movie.peliculaById(req.query.id);
-      reviews = await functions_review.getAllReviewsByIdMovie(req.query.id);
-      for(let i = 0; i<reviews.length; i++){
+      reviews = await functions_review.getAllReviewsByIdMovie(Number(req.query.id));
+      for (let i = 0; i < reviews.length; i++) {
         reviews[i] = await checkDataReview(reviews[i]);
       }
       movie.num_reviews = reviews.length;
       movie = await checkDataMovie(movie);
     } catch (e) {
-      console.log(e);
+      console.log(reviews, req.query, "AAAAAAAAAAAAAAAAAAAAA")
+      console.log("ERRORRR EN LA CONSULTA");
     }
     if (req.session.loggedin) {
       if (req.query.flag) {
@@ -102,6 +105,7 @@ const movie_functions_controller = {
         } catch (e) {
           console.log(e);
         }
+        console.log(newLog);
       }
       res.render("movie", {
         login: true,

@@ -3,6 +3,7 @@ const { Log, functions_log } = require('../models/log');
 const main_functions = {
   cerrarSesion: (req, res) => {
     let log = new Log(null, req.session.name, null, 'N/A', null, 'Se ha cerrado sesión');
+    console.log(log);
     functions_log.insertLog(log)
       .then(() => {
         req.session.destroy(() => {
