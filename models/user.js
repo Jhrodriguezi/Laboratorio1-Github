@@ -73,7 +73,6 @@ const functions_user = {
       let client = await connection.connect();
       let sql = "INSERT INTO usuario (nickname, correo, password, tipousuario) VALUES ($1, $2, $3, $4)";
       user_object.setPassword = await bcrypt.hash(user_object.getPassword, 8);
-      console.log(user_object);
       let values = [user_object.getNickname, user_object.getEmail, user_object.getPassword, user_object.getTipousuario];
       res = await client.query(sql, values);
       client.release(true);

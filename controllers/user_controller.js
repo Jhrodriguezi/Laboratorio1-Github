@@ -7,7 +7,6 @@ const user_functions_controller = {
     let newUser = new User(null, req.body.nickname, req.body.email, req.body.password);
     let result;
     try {
-      console.log(newUser);
       result = await functions_user.insertUser(newUser);
     } catch (err) {
       console.log(err);
@@ -24,11 +23,12 @@ const user_functions_controller = {
     }
     if (result) {
       if (result.rowCount == 1) {
-        try {
-          let user = (await functions_user.selectByNickOrEmailUser(req.body.nickname))[0];
+        let user;
+        try{
+          user = (await functions_user.selectByNickOrEmailUser(req.body.nickname))[0];
           let log = new Log(null, user.getNickname, null, 'Insert user', null, 'Se ha registrado un usuario en la pagina web');
           await functions_log.insertLog(log);
-        } catch (e) {
+        }catch (e){
           console.log(e);
         }
         req.session.loggedin = true;
