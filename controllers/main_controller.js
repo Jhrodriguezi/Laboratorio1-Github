@@ -1,4 +1,5 @@
 const { Log, functions_log } = require('../models/log');
+const { Movie, functions_movie} = require('../models/movie');
 
 const main_functions = {
   cerrarSesion: (req, res) => {
@@ -25,13 +26,15 @@ const main_functions = {
       res.render("login");
     }
   },
-  cargarFormularioResena: (req, res) => {
+  cargarFormularioResena: async (req, res) => {
     if (req.session.loggedin) {
+      let movie = await functions_movie.peliculaById(req.query.id);
       res.render("resena-formulario", {
         login: true,
         name: req.session.name,
         idusuario: req.session.idusuario,
-        idpelicula: req.query.id
+        idpelicula: req.query.id,
+        movie_name: movie.title
       });
     } else {
       res.render("resena-formulario", {
@@ -45,7 +48,29 @@ const main_functions = {
         timer: false,
         ruta: '',
         idusuario: null,
-        idpelicula: null
+        idpelicula: null,
+        movie_name: null
+      });
+    }
+  },
+  cargarHome: (req, res) => {
+    if (req.session.loggedin) {
+      req.session.authorize_log_movie = true;
+      res.render("grid", {
+        login: true,
+        name: req.session.name
+      });
+    } else {
+      res.render("grid", {
+        login: false,
+        name: "??",
+        alert: true,
+        alertTitle: "Login requerido",
+        alertMessage: "Debe identificarse para acceder a la pagina",
+        alertIcon: 'info',
+        showConfirmButton: true,
+        timer: false,
+        ruta: ''
       });
     }
   }

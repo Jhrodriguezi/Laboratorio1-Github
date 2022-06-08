@@ -28,8 +28,8 @@ async function crearbd(){
         client.end()
     })
     // eliminar tabla reseña
-    client.query(`drop table if exists reseña;`).then(response => {
-        console.log("Se ha eliminado la tabla reseña")
+    client.query(`drop table if exists resena;`).then(response => {
+        console.log("Se ha eliminado la tabla resena")
     })
     .catch(err => {
         console.log("ERROR")
@@ -94,7 +94,7 @@ async function crearbd(){
     client.query(`create table pelicula(
         id              bigint primary key,
         puntuacion      decimal,
-        NReseñas        bigint
+        nresenas        bigint
         );`
     ).then(response => {
     console.log("Se ha creado la tabla pelicula")
@@ -115,8 +115,8 @@ async function crearbd(){
                         fechaPub        timestamp,
                         puntuacion      decimal,
                         visible         boolean,
-                        idUsuario       bigint REFERENCES usuario(id) ON DELETE CASCADE ON UPDATE CASCADE,    
-                        idPelicula      bigint REFERENCES pelicula(id) ON DELETE CASCADE ON UPDATE CASCADE 
+                        idusuario       bigint REFERENCES usuario(id) ON DELETE CASCADE ON UPDATE CASCADE,    
+                        idpelicula      bigint REFERENCES pelicula(id) ON DELETE CASCADE ON UPDATE CASCADE 
                         );`
     ).then(response => {
         console.log("Se ha creado la tabla reseña")
@@ -134,8 +134,8 @@ async function crearbd(){
         denuncias       integer,
         fechaPub        timestamp,
         visible         boolean,
-        idUsuario       bigint REFERENCES usuario(id) ON DELETE CASCADE ON UPDATE CASCADE,    
-        idReseña        bigint REFERENCES reseña(id) ON DELETE CASCADE ON UPDATE CASCADE 
+        idusuario       bigint REFERENCES usuario(id) ON DELETE CASCADE ON UPDATE CASCADE,    
+        idresena        bigint REFERENCES resena(id) ON DELETE CASCADE ON UPDATE CASCADE 
         );`
     ).then(response => {
     console.log("Se ha creado la tabla comentario")
@@ -151,11 +151,11 @@ async function crearbd(){
                     begin
                         if(new.denuncias >= 20) then
                             new.visible := false;
-                            return new;
                         end if;
+                        return new;
                     end;
                     $denunciar$ LANGUAGE plpgsql;
-                    create trigger denunciar after update on reseña for each row execute procedure udenunciar();`
+                    create trigger denunciar after update on resena for each row execute procedure udenunciar();`
     ).then(response => {
     console.log("Se ha creado el trigger denunciar en reseña")
     })
@@ -170,8 +170,8 @@ async function crearbd(){
                     begin
                         if(new.denuncias >= 20) then
                             new.visible := false;
-                            return new;
                         end if;
+                        return new;
                     end;
                     $denunciac$ LANGUAGE plpgsql;
                     create trigger denunciac after update on comentario for each row execute procedure udenunciac();`

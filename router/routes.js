@@ -6,11 +6,12 @@ const user_controller = require('../controllers/user_controller');
 const main_controller = require('../controllers/main_controller');
 const movie_controller = require('../controllers/movie_controller');
 const review_controller = require('../controllers/review_controller');
+const comment_controller = require('../controllers/comment_controller');
 
 //Carga el formulario de autenticacion
 routes.get("/", main_controller.cargarFormularioLogin);
 //Carga la pagina principal y verifica que el usuario se haya autenticado.
-routes.get('/home', user_controller.verificarLogin);
+routes.get('/home', main_controller.cargarHome);
 //Carga el formulario de registro
 routes.get("/register-form", main_controller.cargarFormularioRegistro);
 //Eliminar la sesion y redirecciona al usuario a la pagina inicial.
@@ -34,5 +35,9 @@ routes.post("/register", user_controller.registrarUsuario);
 routes.post("/auth", user_controller.loginUser);
 //Toma los datos enviados en el formulario de reseña y la crea, hace una validacion y luego redirige a la pelicula reseñada.
 routes.post("/resena_create", review_controller.agregarReview);
+//Peticion para crear el comentario
+routes.post("/comment_create", comment_controller.agregarComment);
+
+routes.post('/update/review', review_controller.actualizarReview);
 
 module.exports = routes;

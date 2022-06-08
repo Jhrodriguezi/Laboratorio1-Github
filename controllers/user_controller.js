@@ -78,7 +78,6 @@ const user_functions_controller = {
         req.session.name = users[0].getNickname;
         req.session.role = users[0].getTipousuario;
         let log = new Log(null, users[0].getNickname, null, 'Read user', null, 'Ha ingresado un usuario a la pagina web');
-        console.log(log);
         await functions_log.insertLog(log);
         res.render("intermedio", {
           alert: true,
@@ -90,27 +89,6 @@ const user_functions_controller = {
           ruta: 'home'
         });
       }
-    }
-  },
-
-  verificarLogin: (req, res) => {
-    if (req.session.loggedin) {
-      res.render("grid", {
-        login: true,
-        name: req.session.name
-      });
-    } else {
-      res.render("grid", {
-        login: false,
-        name: "??",
-        alert: true,
-        alertTitle: "Login requerido",
-        alertMessage: "Debe identificarse para acceder a la pagina",
-        alertIcon: 'info',
-        showConfirmButton: true,
-        timer: false,
-        ruta: ''
-      });
     }
   },
 };

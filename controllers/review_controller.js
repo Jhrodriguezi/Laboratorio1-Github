@@ -5,31 +5,22 @@ const { Movie, functions_movie } = require('../models/movie');
 const review_functions_controller = {
   agregarReview: async (req, res) => {
     //revisar, se puede cambiar req.body.idusuario por req.session.idusuario
-    let newReview = new Review(null, req.body.titulo, req.body.contenido, 0, 0, 0, null, req.body.calificacion, req.body.idusuario, req.body.idpelicula);
-    let newMovie;
-    let result;
+    let newReview = new Review(null, req.body.titulo, req.body.contenido, 0, 0, 0, null, req.body.calificacion, true, req.body.idusuario, req.body.idpelicula);
+    let newMovie, result, nresenas, puntuacion;
     try {
-      let rm = (await functions_movie.SelectMovieById(req.body.idpelicula)).rowCount;
+      let rm = (await functions_movie.selectMovieById(req.body.idpelicula)).length;
       if (rm == 0) {
-        let puntuacion, nresenas;
-        //revisar funcion
-        nresenas = await functions_review.getCountReviewsByIdMovie(req.body.idpelicula);
-        puntuacion = await functions_review.getAverageMovie(req.body.idpelicula);
-        if (!puntuacion) {
-          puntuacion = 0;
-        }
-        newMovie = new Movie(req.body.idpelicula, puntuacion, nresenas);
+        newMovie = new Movie(req.body.idpelicula, 0, 0);
         await functions_movie.insertMovie(newMovie);
-      } else {
-        nresenas = await functions_review.getCountReviewsByIdMovie(req.body.idpelicula);
-        puntuacion = await functions_review.getAverageMovie(req.body.idpelicula);
-        if (!puntuacion) { puntuacion = 0; }
-        newMovie = new Movie(req.body.idpelicula, puntuacion, nresenas);
-        await functions_movie.updateMovie(newMovie);
       }
       result = await functions_review.insertReview(newReview);
+      nresenas = await functions_review.getCountReviewsByIdMovie(req.body.idpelicula);
+      puntuacion = await functions_review.getAverageMovie(req.body.idpelicula);
+      newMovie = new Movie(req.body.idpelicula, puntuacion, nresenas);
+      await functions_movie.updateMovie(newMovie);
     } catch (err) {
       result = undefined;
+      console.log("review_controller/agregarReview - " + err);
       res.render("intermedio", {
         alert: true,
         alertTitle: "Error",
@@ -55,11 +46,16 @@ const review_functions_controller = {
           alertIcon: 'success',
           showConfirmButton: false,
           timer: 3500,
-          ruta: 'search?id=' + newReview.getIdPelicula + '&flag=false'
+          ruta: 'search?id=' + newReview.getIdPelicula
         });
       }
     }
   },
+  actualizarReview: async (req, res) => {
+    let rev = new Review(req.body.idreview, null, null, req.body.likes, req.body.dislikes, req.body.denuncias, null, null, null, null, null);
+    await functions_review.updateReview(rev);
+    res.status(200).send();
+  }
 };
 
 module.exports = review_functions_controller;

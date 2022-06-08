@@ -9,10 +9,11 @@ class Review {
   #denuncias;
   #fechapub;
   #puntuacion;
+  #visible;
   #idusuario;
   #idpelicula;
 
-  constructor(id, encabezado, contenido, likes, dislikes, denuncias, fechapub, puntuacion, idusuario, idpelicula){
+  constructor(id, encabezado, contenido, likes, dislikes, denuncias, fechapub, puntuacion, visible, idusuario, idpelicula){
     this.id = id;
     this.encabezado = encabezado;
     this.contenido = contenido;
@@ -21,6 +22,7 @@ class Review {
     this.denuncias = denuncias;
     this.fechapub = fechapub;
     this.puntuacion = puntuacion;
+    this.visible = visible;
     this.idusuario = idusuario;
     this.idpelicula = idpelicula;
   }
@@ -113,6 +115,11 @@ class Review {
     this.puntuacion = puntuacion;
   }
 
+  get getVisible() {
+    return this.visible;
+  }
+
+
   get getIdUsuario() {
     return this.idusuario;
   }
@@ -141,7 +148,7 @@ const functions_review = {
   insertReview: async (review_object)=>{
     try {
       let client = await connection.connect();
-      let sql = "INSERT INTO resena (encabezado, contenido, likes, dislikes, denuncias, fechapub, puntuacion, idusuario, idpelicula) values($1, $2, $3, $4, $5, now(), $6, $7, $8)";
+      let sql = "INSERT INTO resena (encabezado, contenido, likes, dislikes, denuncias, fechapub, puntuacion, visible, idusuario, idpelicula) values($1, $2, $3, $4, $5, now(), $6, TRUE, $7, $8)";
       let values = [review_object.getEncabezado, review_object.getContenido, review_object.getLikes, review_object.getDislikes, review_object.getDenuncias, review_object.getPuntuacion, review_object.getIdUsuario, review_object.getIdPelicula];
       let result = await client.query(sql, values);
       client.release(true);
@@ -150,14 +157,29 @@ const functions_review = {
       console.log(e);
     }
   },
-  updateDenuncias: async (review_object) => {
+  updateReview: async (review_object) => {
     try {
       let client = await connection.connect();
-      let sql = "UPDATE resena SET denuncias=$1 WHERE id=$2";
-      let values = [review_object.getDenuncias + 1, review_object.getId];
-      let result = await client.query(sql, values);
-      console.log(result);
+      let sql = "UPDATE resena SET likes=$1, dislikes=$2, denuncias=$3 WHERE id=$4";
+      let values = [review_object.getLikes, review_object.getDislikes, review_object.getDenuncias, review_object.getId];
+      await client.query(sql, values);
       client.release(true);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  selectByIdReview: async (id) => {
+    try {
+      let client = await connection.connect();
+      let sql = "SELECT * FROM resena WHERE id=$1";
+      let values = [id];
+      let result = [], resp;
+      resp = await client.query(sql, values);
+      resp.rows.forEach(element => {
+        result.push(new Review(element.id, element.encabezado, element.contenido, element.likes, element.dislikes, element.denuncias, element.fechapub, element.puntuacion, element.visible, element.idusuario, element.idpelicula));
+      });
+      client.release(true);
+      return result;
     } catch (e) {
       console.log(e);
     }
@@ -170,7 +192,7 @@ const functions_review = {
       let result = [], resp;
       resp = await client.query(sql, values);
       resp.rows.forEach(element => {
-        result.push(new Review(element.id, element.encabezado, element.contenido, element.likes, element.dislikes, element.denuncias, element.fechapub, element.puntuacion, element.idusuario, element.idpelicula));
+        result.push(new Review(element.id, element.encabezado, element.contenido, element.likes, element.dislikes, element.denuncias, element.fechapub, element.puntuacion, element.visible, element.idusuario, element.idpelicula));
       });
       client.release(true);
       return result;

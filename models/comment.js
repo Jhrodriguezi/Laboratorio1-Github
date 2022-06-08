@@ -6,30 +6,30 @@ class Comment{
   #likes;
   #dislikes;
   #denuncias;
-  #fechaPub;
+  #fechapub;
   #visible;
-  #idUsuario;
-  #idReseña;
+  #idusuario;
+  #idreview;
 
   constructor(id, contenido, likes, dislikes, denuncias,
-              fechaPub, visible, idUsuario, idReseña) {
+              fechaPub, visible, idusuario, idreview) {
     this.id = id;
     this.contenido = contenido;
     this.likes = likes;
     this.dislikes = dislikes;
     this.denuncias = denuncias;
-    this.fechaPub = fechaPub;
+    this.fechapub = fechaPub;
     this.visible = visible;
-    this.idUsuario = idUsuario;
-    this.idReseña = idReseña;
+    this.idusuario = idusuario;
+    this.idreview = idreview;
   }
 
   get getId() {
     return this.id;
   }
 
-  set setContenido(id) {
-    this.contenido = contenido;
+  set setId(id) {
+    this.id = id;
   }
 
   get getContenido() {
@@ -65,11 +65,11 @@ class Comment{
   }
 
   get getFechaPub() {
-    return this.fechaPub;
+    return this.fechapub;
   }
 
-  set setFechaPub(fechaPub) {
-    this.fechaPub = fechaPub;
+  set setFechaPub(fechapub) {
+    this.fechapub = fechapub;
   }
 
   get getVisible() {
@@ -81,19 +81,19 @@ class Comment{
   }
 
   get getIdUsuario() {
-    return this.idUsuario;
+    return this.idusuario;
   }
 
-  set setIdUsuario(idUsuario) {
-    this.idUsuario = idUsuario;
+  set setIdUsuario(idusuario) {
+    this.idusuario = idusuario;
   }
 
-  get getIdReseña() {
-    return this.idReseña;
+  get getIdReview() {
+    return this.idreview;
   }
 
-  set setIdReseña(idReseña) {
-    this.idReseña = idReseña;
+  set setIdReview(idreview) {
+    this.idreview = idreview;
   }
 }
 
@@ -101,8 +101,8 @@ const functions_comment = {
   insertComment: async (comment_object) => {
     try {
       let client = await connection.connect();
-      let sql = "INSERT INTO comentario (contenido, likes, dislikes, denuncias, fechaPub, visible, idUsuario, idReseña) values($1, $2, $3, $4, $5, $6, $7, $8)";
-      let values = [comment_object.getContenido, comment_object.getLikes, comment_object.getDislikes, comment_object.getDenuncias, comment_object.getFechaPub, comment_object.getVisible, comment_object.getIdUsuario, comment_object.getIdReseña];
+      let sql = "INSERT INTO comentario (contenido, likes, dislikes, denuncias, fechapub, visible, idusuario, idresena) values($1, $2, $3, $4, now(), TRUE, $5, $6)";
+      let values = [comment_object.getContenido, comment_object.getLikes, comment_object.getDislikes, comment_object.getDenuncias, comment_object.getIdUsuario, comment_object.getIdReview];
       let result = await client.query(sql, values);
       client.release(true);
       return result;
@@ -110,24 +110,30 @@ const functions_comment = {
       console.log(e);
     }
   },
-  SelectCommentById: async (id) => {
+  selectCommentById: async (id) => {
     try {
       let client = await connection.connect();
       let sql = "SELECT * FROM comentario WHERE id=$1";
       let values = [id];
-      let result = await client.query(sql, values);
+      let result = [];
+      (await client.query(sql, values)).rows.forEach(element => {
+        result.push(new Comment(element.id, element.contenido, element.likes, element.dislikes, element.denuncias, element.fechapub, element.visible, element.idusuario, element.idresena))
+      });
       client.release(true);
       return result;
     } catch (e) {
       console.log(e);
     }
   },
-  SelectCommentsByReviewId: async (idReseña) => {
+  selectCommentsByIdReview: async (idReview) => {
     try {
       let client = await connection.connect();
-      let sql = "SELECT * FROM comentario WHERE idReseña=$1";
-      let values = [idReseña];
-      let result = await client.query(sql, values);
+      let sql = "SELECT * FROM comentario WHERE idresena=$1";
+      let values = [idReview];
+      let result = [];
+      (await client.query(sql, values)).rows.forEach(element => {
+        result.push(new Comment(element.id, element.contenido, element.likes, element.dislikes, element.denuncias, element.fechapub, element.visible, element.idusuario, element.idresena))
+      });
       client.release(true);
       return result;
     } catch (e) {
@@ -137,8 +143,8 @@ const functions_comment = {
   updateComment: async (comment_object) =>{
     try {
       let client = await connection.connect();
-      let sql = "UPDATE comentario SET contenido=$1, likes=$2, dislikes=$3, denuncias=$4, fechaPub=$5, visible=$6, idUsuario=$7, idReseña=$8 WHERE id=$9";      
-      let values = [comment_object.getContenido, comment_object.getLikes, comment_object.getDislikes, comment_object.getDenuncias, comment_object.getFechaPub, comment_object.getVisible, comment_object.getIdUsuario, comment_object.getIdReseña, comment_object.getId];
+      let sql = "UPDATE comentario SET likes=$1, dislikes=$2, denuncias=$3 WHERE id=$4";      
+      let values = [comment_object.getLikes, comment_object.getDislikes, comment_object.getDenuncias, comment_object.getId];
       let result = await client.query(sql, values);
       client.release(true);
       return result;

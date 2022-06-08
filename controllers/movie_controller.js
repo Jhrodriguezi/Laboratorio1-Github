@@ -3,6 +3,76 @@ const { Log, functions_log } = require('../models/log');
 const { Review, functions_review } = require('../models/review');
 const { User, functions_user } = require('../models/user');
 const { Comment, functions_comment} = require('../models/comment');
+const general_functions = require('./general_functions');
+
+const movie_functions_controller = {
+  cargarPelicula: async (req, res) => {
+    let movie, newLog, reviews;
+    try {
+      movie = await functions_movie.peliculaById(req.query.id);
+      reviews = await functions_review.getAllReviewsByIdMovie(Number(req.query.id));
+      for (let i = 0; i < reviews.length; i++) {
+        reviews[i] = await checkDataReview(reviews[i]);
+      }
+      movie = await checkDataMovie(movie);
+    } catch (e) {
+      console.log("movie_controller/cargarPelicula - "+e);
+    }
+    if (req.session.loggedin) {
+      if (req.session.authorize_log_movie) {
+        try {
+          newLog = new Log(null, req.session.name, null, "Read movie", movie.id, 'El usuario ha consultado la pelicula: ' + movie.title);
+          await functions_log.insertLog(newLog);
+          req.session.authorize_log_movie = false;
+        } catch (e) {
+          console.log(e);
+        }
+        console.log(newLog);
+      }
+      res.render("movie", {
+        login: true,
+        name: req.session.name,
+        idusuario: req.session.idusuario,
+        movie,
+        reviews,
+      });
+    } else {
+      res.render("movie", {
+        login: false,
+        name: "??",
+        alert: true,
+        alertTitle: "Login requerido",
+        alertMessage: "Debe identificarse para acceder a la pagina",
+        alertIcon: 'info',
+        showConfirmButton: true,
+        timer: false,
+        ruta: '',
+        idusuario: -1,
+        movie,
+        reviews,
+      });
+    }
+    //res.send(movie);
+  },
+  obtenerPeliculasPorNombre: async (req, res) => {
+    let movies;
+    try {
+      movies = await functions_movie.buscar(req.query.name);
+    } catch (e) {
+      console.log(e);
+    }
+    res.send(movies);
+  },
+  obtenerPeliculasPopulares: async (req, res) => {
+    let movies;
+    try {
+      movies = await functions_movie.masPopulares();
+    } catch (e) {
+      console.log(e)
+    }
+    res.send(movies);
+  }
+}
 
 async function checkDataMovie(movie) {
   if (!movie.title) {
@@ -42,22 +112,19 @@ async function checkDataMovie(movie) {
     movie.release_date = "-";
   }
 
-  let average;
+  let result;
 
   try {
-    average = await functions_review.getAverageMovie(movie.id);
-    average = Math.round(average);
+    result = await functions_movie.selectMovieById(movie.id);
+    if(result.length>0){
+      movie.vote_average = Math.round(result[0].getPuntuacion * 10) / 10;
+      movie.num_reviews = result[0].getNresenas;
+    }else{
+      movie.vote_average = "-";
+      movie.num_reviews = 0;
+    }
   } catch (e) {
     console.log(e);
-  }
-
-  if (!average) {
-    average = "-";
-  }
-
-  movie.vote_average = average;
-  if (!movie.num_reviews) {
-    movie.num_reviews = 0;
   }
 
   if (!movie.overview) {
@@ -71,83 +138,28 @@ async function checkDataReview(r) {
   let user;
   try {
     user = (await functions_user.selectByIdUser(r.getIdUsuario))[0];
+    r.comments = await functions_comment.selectCommentsByIdReview(r.getId);
+    r.comments.forEach(async (comment) => {
+      comment = await checkDataComment(comment);
+    });
   } catch (e) {
     console.log(e)
   }
-  r.setIdUsuario = user.getNickname;
-  r.setFechapub = r.getFechapub.getDate() + "/" + (r.getFechapub.getMonth() + 1) + "/" + r.getFechapub.getFullYear();
-  r.comments = [{contenido:"askdjasdkñlas", fechapub:"07/06/2022", idusuario: "jhrodriguezi", likes:1, dislikes: 2, denuncias: 5}]
+  r.nickname = user.getNickname;
+  r.setFechapub = general_functions.date_format(r.getFechapub);
   return r;
 }
 
-
-const movie_functions_controller = {
-  cargarPelicula: async (req, res) => {
-    let movie, newLog, reviews;
-    try {
-      movie = await functions_movie.peliculaById(req.query.id);
-      reviews = await functions_review.getAllReviewsByIdMovie(Number(req.query.id));
-      for (let i = 0; i < reviews.length; i++) {
-        reviews[i] = await checkDataReview(reviews[i]);
-      }
-      movie.num_reviews = reviews.length;
-      movie = await checkDataMovie(movie);
-    } catch (e) {
-      console.log(reviews, req.query, "AAAAAAAAAAAAAAAAAAAAA")
-      console.log("ERRORRR EN LA CONSULTA");
-    }
-    if (req.session.loggedin) {
-      if (req.query.flag) {
-        try {
-          newLog = new Log(null, req.session.name, null, "Read movie", movie.id, 'El usuario ha consultado la pelicula: ' + movie.title);
-          await functions_log.insertLog(newLog);
-          req.query.flag = false;
-        } catch (e) {
-          console.log(e);
-        }
-        console.log(newLog);
-      }
-      res.render("movie", {
-        login: true,
-        name: req.session.name,
-        movie,
-        reviews,
-      });
-    } else {
-      res.render("movie", {
-        login: false,
-        name: "??",
-        alert: true,
-        alertTitle: "Login requerido",
-        alertMessage: "Debe identificarse para acceder a la pagina",
-        alertIcon: 'info',
-        showConfirmButton: true,
-        timer: false,
-        ruta: '',
-        movie,
-        reviews,
-      });
-    }
-    //res.send(movie);
-  },
-  obtenerPeliculasPorNombre: async (req, res) => {
-    let movies;
-    try {
-      movies = await functions_movie.buscar(req.query.name);
-    } catch (e) {
-      console.log(e);
-    }
-    res.send(movies);
-  },
-  obtenerPeliculasPopulares: async (req, res) => {
-    let movies;
-    try {
-      movies = await functions_movie.masPopulares();
-    } catch (e) {
-      console.log(e)
-    }
-    res.send(movies);
+async function checkDataComment(c){
+  let user;
+  try {
+    user = (await functions_user.selectByIdUser(c.getIdUsuario))[0];
+  }catch(e){
+    console.log("movie_controller/checkDataComment - "+e);
   }
+  c.nickname = user.getNickname;
+  c.setFechaPub = general_functions.date_format(c.getFechaPub);
+  return c;
 }
 
 module.exports = movie_functions_controller;

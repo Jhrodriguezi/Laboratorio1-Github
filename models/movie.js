@@ -64,7 +64,7 @@ const functions_movie = {
   insertMovie: async (movie_object) => {
     try {
       let client = await connection.connect();
-      let sql = "INSERT INTO pelicula (id, puntuacion, nreseñas) values($1, $2, $3)";
+      let sql = "INSERT INTO pelicula (id, puntuacion, nresenas) values($1, $2, $3)";
       let values = [movie_object.getId, movie_object.getPuntuacion, movie_object.getNresenas];
       let result = await client.query(sql, values);
       client.release(true);
@@ -73,12 +73,15 @@ const functions_movie = {
       console.log(e);
     }
   },
-  SelectMovieById: async (id) => {
+  selectMovieById: async (id) => {
     try {
       let client = await connection.connect();
       let sql = "SELECT * FROM pelicula WHERE id=$1";
       let values = [id];
-      let result = await client.query(sql, values);
+      let result = [];
+      (await client.query(sql, values)).rows.forEach(movie => {
+        result.push(new Movie(movie.id, movie.puntuacion, movie.nresenas));
+      })
       client.release(true);
       return result;
     } catch (e) {
@@ -88,7 +91,7 @@ const functions_movie = {
   updateMovie: async (movie_object) =>{
     try {
       let client = await connection.connect();
-      let sql = "UPDATE pelicula SET puntuacion=$1, nreseñas=$2 WHERE id=$3";
+      let sql = "UPDATE pelicula SET puntuacion=$1, nresenas=$2 WHERE id=$3";
       let values = [movie_object.getPuntuacion, movie_object.getNresenas, movie_object.getId];
       let result = await client.query(sql, values);
       client.release(true);
