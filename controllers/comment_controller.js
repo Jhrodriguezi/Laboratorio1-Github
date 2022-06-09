@@ -52,6 +52,7 @@ async function checkDataComment(c, nickname) {
     let text = ["denunciado el", "reaccionado con un like al", "reaccionado con un dislike al"];
     let propiedades = ["mostrarBotonDenuncia", "mostrarBotonLike", "mostrarBotonDislike"];
     let res;
+    if(c.denuncias>=20){c.visible=false;}
     for (let i = 0; i < 3; i++) {
       res = await functions_log.selectByNicknameAndReactionsCommentLog(nickname, c.getId, text[i]);
       if (res.rowCount == 0) {

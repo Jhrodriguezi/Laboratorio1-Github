@@ -168,6 +168,17 @@ const functions_review = {
       console.log(e);
     }
   },
+  updateReviewC: async (review_object) => {
+    try {
+      let client = await connection.connect();
+      let sql = "UPDATE resena SET denuncias=$1 WHERE id=$2";
+      let values = [review_object.getDenuncias, review_object.getId];
+      await client.query(sql, values);
+      client.release(true);
+    } catch (e) {
+      console.log(e);
+    }
+  },
   selectByIdReview: async (id) => {
     try {
       let client = await connection.connect();

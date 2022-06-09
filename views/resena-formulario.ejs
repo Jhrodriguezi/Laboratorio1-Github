@@ -61,7 +61,7 @@
       </div>
       <div class="container" style="margin-top: 20px;">
          <div class="formulario-reseña">
-            <form method="post" action="/resena_create">
+            <form method="post" action="/resena_create" onSubmit="document.getElementById('submit').disabled=true;">
                <input type="text" id="titulo" name="idpelicula" value="<%=idpelicula%>" style="display:none;" />
                <input type="text" id="titulo" name="idusuario" value="<%=idusuario%>" style="display:none;" />
                <div>

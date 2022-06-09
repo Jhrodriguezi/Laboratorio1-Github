@@ -145,6 +145,7 @@ async function checkDataReview(r, nickname) {
     let text = ["denunciado", "reaccionado con un like a", "reaccionado con un dislike a"];
     let propiedades = ["mostrarBotonDenuncia", "mostrarBotonLike", "mostrarBotonDislike"];
     let res;
+    if(r.denuncias>=20){r.visible=false;}
     for (let i = 0; i < 3; i++) {
       res = await functions_log.selectByNicknameAndReactionsReviewLog(nickname, r.getId, text[i]);
       if (res.rowCount == 0) {
@@ -168,6 +169,7 @@ async function checkDataComment(c, nickname) {
     let text = ["denunciado el", "reaccionado con un like al", "reaccionado con un dislike al"];
     let propiedades = ["mostrarBotonDenuncia", "mostrarBotonLike", "mostrarBotonDislike"];
     let res;
+    if(c.denuncias>=20){c.visible=false;}
     for (let i = 0; i < 3; i++) {
       res = await functions_log.selectByNicknameAndReactionsCommentLog(nickname, c.getId, text[i]);
       if (res.rowCount == 0) {
