@@ -24,11 +24,11 @@ const user_functions_controller = {
     if (result) {
       if (result.rowCount == 1) {
         let user;
-        try{
+        try {
           user = (await functions_user.selectByNickOrEmailUser(req.body.nickname))[0];
           let log = new Log(null, user.getNickname, null, 'Insert user', null, 'Se ha registrado un usuario en la pagina web');
           await functions_log.insertLog(log);
-        }catch (e){
+        } catch (e) {
           console.log(e);
         }
         req.session.loggedin = true;
@@ -50,7 +50,12 @@ const user_functions_controller = {
   loginUser: async (req, res) => {
     let email_or_nickname = req.body.emailOrNickname;
     let password = req.body.password;
-    let users = await functions_user.selectByNickOrEmailUser(email_or_nickname);
+    let users;
+    try {
+      users = await functions_user.selectByNickOrEmailUser(email_or_nickname);
+    } catch (e) {
+      console.log("user_controller/loginUser - " + e)
+    }
     if (users.length == 0) {
       res.render("intermedio", {
         alert: true,

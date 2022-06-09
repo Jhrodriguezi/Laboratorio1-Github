@@ -1,4 +1,3 @@
-//const { Router } = require('express');
 const express = require('express');
 const routes = express.Router();
 const path = require('path');
@@ -16,7 +15,6 @@ routes.get('/home', main_controller.cargarHome);
 routes.get("/register-form", main_controller.cargarFormularioRegistro);
 //Eliminar la sesion y redirecciona al usuario a la pagina inicial.
 routes.get('/logout', main_controller.cerrarSesion);
-
 //Obtiene la informacion de una pelicula a partir de un id
 routes.get('/search', movie_controller.cargarPelicula);
 //Toma un nombre y obtiene las peliculas que concuerden con el nombre.
@@ -26,9 +24,6 @@ routes.get('/search/movies/popular', movie_controller.obtenerPeliculasPopulares)
 //Renderiza el formulario de reseña y envia algunos datos de utilidad (idpeliculas e idusuario)
 routes.get('/resena-form', main_controller.cargarFormularioResena);
 
-
-
-
 //Toma los datos enviados en el formulario de registro y hace la insercion en la base de datos, si hay un error redirige al usuario al formulario e informa.
 routes.post("/register", user_controller.registrarUsuario);
 //Toma los datos enviados en el formulario de autenticacion y lo valida con los datos almacenados en la bd.
@@ -37,7 +32,9 @@ routes.post("/auth", user_controller.loginUser);
 routes.post("/resena_create", review_controller.agregarReview);
 //Peticion para crear el comentario
 routes.post("/comment_create", comment_controller.agregarComment);
-
+//Actualiza los contadores like, dislike y denuncia
 routes.post('/update/review', review_controller.actualizarReview);
+//Actualiza los contadores like, dislike y denuncia
+routes.post('/update/comment', comment_controller.actualizarComment);
 
 module.exports = routes;

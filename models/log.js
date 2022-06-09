@@ -112,17 +112,30 @@ const functions_log = {
     return result;
   },
 
-  selectByNickOrEmailUser: async (email_or_nickname) => {
-    let client = await connection.connect();
-    let sql = "SELECT * FROM usuario where nickname=$1 or correo=$2";
-    let values = [email_or_nickname, email_or_nickname];
-    let result = [];
-    let res = await client.query(sql, values);
-    res.rows.forEach(element => {
-      result.push(new User(element.id, element.nickname, element.correo, element.password, element.tipousuario));
-    });
-    client.release(true);
-    return result;
+  selectByNicknameAndReactionsReviewLog: async (nickname, idreview, text) => {
+    try {
+      let client = await connection.connect();
+      let sql = "SELECT * FROM log WHERE usuario= '" + nickname + "' and accion LIKE 'El usuario ha " + text + " la reseña: " + idreview+"'";
+      let values = [nickname, text, idreview];
+      let result = await client.query(sql);
+      client.release(true);
+      return result;
+    } catch (e) {
+      console.log("models/log/selectByNicknameAndReactionsReviewLog - " + e);
+    }
+  },
+  selectByNicknameAndReactionsCommentLog: async (nickname, idcomment, text) => {
+    try {
+      let client = await connection.connect();
+      let sql = "SELECT * FROM log WHERE usuario='"+nickname+"' and accion LIKE 'El usuario ha " + text + " comentario: "+idcomment+"'";
+      let values = [nickname, text, idcomment];
+      let result = await client.query(sql);
+      console.log(result.rows);
+      client.release(true);
+      return result;
+    } catch (e) {
+      console.log("models/log/selectByNicknameAndReactionsCommentLog - " + e);
+    }
   }
 }
 
