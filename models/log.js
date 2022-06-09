@@ -130,7 +130,6 @@ const functions_log = {
       let sql = "SELECT * FROM log WHERE usuario='"+nickname+"' and accion LIKE 'El usuario ha " + text + " comentario: "+idcomment+"'";
       let values = [nickname, text, idcomment];
       let result = await client.query(sql);
-      console.log(result.rows);
       client.release(true);
       return result;
     } catch (e) {
