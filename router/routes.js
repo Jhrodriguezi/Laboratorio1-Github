@@ -24,6 +24,17 @@ routes.get('/search/movies/popular', movie_controller.obtenerPeliculasPopulares)
 //Renderiza el formulario de reseña y envia algunos datos de utilidad (idpeliculas e idusuario)
 routes.get('/resena-form', main_controller.cargarFormularioResena);
 
+
+routes.get('/user/history', main_controller.cargarHistorialResenas);
+routes.get('/tendencias', main_controller.cargarTendencias);
+routes.get('/statistics/movie', main_controller.cargarEstadisticasPelicula);
+routes.get('/admin', main_controller.cargarTablaAdmin);
+
+
+
+
+
+
 //Toma los datos enviados en el formulario de registro y hace la insercion en la base de datos, si hay un error redirige al usuario al formulario e informa.
 routes.post("/register", user_controller.registrarUsuario);
 //Toma los datos enviados en el formulario de autenticacion y lo valida con los datos almacenados en la bd.

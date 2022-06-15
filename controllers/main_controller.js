@@ -73,6 +73,18 @@ const main_functions = {
         ruta: ''
       });
     }
+  },
+  cargarHistorialResenas: (req, res) => {
+    res.render("historial");
+  },
+  cargarTendencias: (req, res) => {
+    res.render("tendencias");
+  },
+  cargarEstadisticasPelicula: (req, res) => {
+    res.render("movie-statistics");
+  },
+  cargarTablaAdmin: (req, res) => {
+    res.render("admin-table");
   }
 }
 
