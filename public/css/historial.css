@@ -1,0 +1,85 @@
+.contents {
+   padding-top: 10px;
+   width: inherit;
+    margin: 1rem;
+    padding: 2rem;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+    border-radius: var(--border-radius);
+    margin: 0;
+    height: 80%;
+    min-height: 100%;
+    align-self: left;
+    font-size: 18px;
+    --border-radius: 50px;
+    overflow: hidden;
+    align-self:center;
+  background-color: #838383;
+}
+
+.contents h2{
+  padding-left:5px;
+}
+
+.data{
+    width:24%;
+    height:40%;
+    float:left;
+    background-color: white;
+  border-style: solid;
+  border-color: black;
+    }
+
+.data td{
+  padding: 5px;
+  padding-bottom: 8px;
+}
+
+.historial-block{
+    background-color: white;
+    width:75%;
+    height:100%;
+    float:right;
+    border-style: solid;
+    border-color: black;
+    margin-bottom: 10px;
+    }
+
+.historial-block td{
+  Padding-left: 3px;
+  font-size:125%;
+}
+
+.historial-block p{
+  padding-left: 3px;
+}
+
+.interactions{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:40%;
+    height:auto%;
+    float:left;
+    background-color: white;
+    border-style: solid;
+    border-color: black;
+}
+
+.comments{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:40%;
+    height:auto%;
+    float:right;
+    background-color: white;
+    border-style: solid;
+    border-color: black;
+}
+
+.mini{
+  width:80%;
+  margin-bottom: 6%;
+  margin-left:10%;
+  margin-right:10%;
+}
