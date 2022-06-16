@@ -22,51 +22,100 @@
    </head>
    <body style="background-color: #232323; color: white;">
 
-    <h1>Tendencias del sistema</h1>
+    <div style="background-color: #313131; width: 100%; text-align: center;">
+         <div class="container">
 
-    <table style="width: 100%;">
+           <table style="width: 100%;">
+               <tr style="width: 100%;">
+                  <td style="width: 50%;">
+                     <a href="/home" style="text-decoration:none;">
+                        <h1 style="color: #FFFFFF;">PELISLINE</h1>
+                     </a>
+                  </td>
+                  
+                  <td style="width:50%; text-align:right;padding-bottom: 10px;padding-right: 50px;">
+                     <h2 style="color: gainsboro;">demiGod</h2>
+                  </td>
+                  <td style="width: 50%; text-align: right;">
+                     <a style="text-decoration: none;" href="/logout"><button type="button" class="btn btn-secondary">Cerrar Sesion</button></a>
+                  </td>
+                  
+               </tr>
+            </table>
 
-        <tr style="width: fit-content;">
-            <th>
-                <h2>Caracteristica</h2>
 
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="Caracteristica" id="Caracteristica1">
-                    <label class="form-check-label" for="Caracteristica1">
-                      Inicios de sesiones
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="Caracteristica" id="Caracteristica2" checked>
-                    <label class="form-check-label" for="Caracteristica2">
-                      Busquedas de peliculas
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="Caracteristica" id="Caracteristica3" checked>
-                    <label class="form-check-label" for="Caracteristica3">
-                      Reseñas realizadas
-                    </label>
-                  </div>
+            <table style="width: 80%;">
 
-                 
+                <tr>
+                    <th>
+                        <h2>Caracteristica</h2>
+    
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="Caracteristica" id="Caracteristica1">
+                            <label class="form-check-label" for="Caracteristica1">
+                            Inicios de sesiones
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="Caracteristica" id="Caracteristica2" checked>
+                            <label class="form-check-label" for="Caracteristica2">
+                            Busquedas de peliculas
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="Caracteristica" id="Caracteristica3" checked>
+                            <label class="form-check-label" for="Caracteristica3">
+                            Reseñas realizadas
+                            </label>
+                        </div>
+    
+                        
+    
+                    </th>
+                    <th>
+                        Cuadro de datos
+    
+                        <canvas id="Inicios_Seciones" width="400" height="400" style="border: 1px white"></canvas>
+                    </th>
+                </tr>
+    
+                <tr>
+                    <th>
+                        <h2>Intervalo</h2>
+    
+                    <div class="form-check">
+                            <input class="form-check-input" type="radio" name="Intervalo" id="Intervalo1">
+                            <label class="form-check-label" for="Intervalo1">
+                            Dia
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="Intervalo" id="Intervalo2" checked>
+                            <label class="form-check-label" for="Intervalo2">
+                            Semana
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="Intervalo" id="Intervalo3" checked>
+                            <label class="form-check-label" for="Intervalo3">
+                            Mes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="Intervalo" id="Intervalo4" checked>
+                            <label class="form-check-label" for="Intervalo4">
+                            Año
+                            </label>
+                        </div>
+                        
+                    </th>
+                </tr>
+    
+            </table>
 
-            </th>
-            <th>
-                Cuadro de datos
-
-                <canvas id="Inicios_Seciones" width="400" height="400"></canvas>
-            </th>
-          </tr>
-
-          <tr>
-            <th>
-                <h2>Intervalo</h2>
-                
-            </th>
-          </tr>
-
-    </table>
+           
+         </div>
+    </div>
 
     </body>
 </html>
