@@ -17,8 +17,9 @@
       <link rel="stylesheet" href="/resources/css/templatemo-style.css">
       <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
       <script src="/resources/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-      <script src="/resources/js/cuadros"></script>
+      <script type="module" src="/resources/js/tendencias.js"></script>
    </head>
    <body style="background-color: #232323; color: white;">
 
@@ -51,19 +52,19 @@
                         <h2>Caracteristica</h2>
     
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="Caracteristica" id="Caracteristica1">
+                            <input class="form-check-input" type="radio" name="Caracteristica" id="Caracteristica1" checked>
                             <label class="form-check-label" for="Caracteristica1">
                             Inicios de sesiones
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="Caracteristica" id="Caracteristica2" checked>
+                            <input class="form-check-input" type="radio" name="Caracteristica" id="Caracteristica2">
                             <label class="form-check-label" for="Caracteristica2">
                             Busquedas de peliculas
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="Caracteristica" id="Caracteristica3" checked>
+                            <input class="form-check-input" type="radio" name="Caracteristica" id="Caracteristica3">
                             <label class="form-check-label" for="Caracteristica3">
                             Reseñas realizadas
                             </label>
@@ -72,10 +73,10 @@
                         
     
                     </th>
-                    <th>
-                        Cuadro de datos
+                    <th rowspan="2" style="text-align: center;">
+                        <h2>Cuadro de datos</h2>
     
-                        <canvas id="Inicios_Seciones" width="400" height="400" style="border: 1px white"></canvas>
+                        <canvas id="cuadro"></canvas>
                     </th>
                 </tr>
     
@@ -96,13 +97,13 @@
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="Intervalo" id="Intervalo3" checked>
+                            <input class="form-check-input" type="radio" name="Intervalo" id="Intervalo3">
                             <label class="form-check-label" for="Intervalo3">
                             Mes
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="Intervalo" id="Intervalo4" checked>
+                            <input class="form-check-input" type="radio" name="Intervalo" id="Intervalo4">
                             <label class="form-check-label" for="Intervalo4">
                             Año
                             </label>
