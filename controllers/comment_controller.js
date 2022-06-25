@@ -6,18 +6,14 @@ const general_functions = require('./general_functions');
 const comment_functions_controller = {
   agregarComment: async (req, res) => {
     let newComment = new Comment(null, req.body.contenido, 0, 0, 0, null, true, req.body.idusuario, req.body.idreview);
-    let result = [];
     try {
       await functions_comment.insertComment(newComment);
-      result = await functions_comment.selectCommentsByIdReview(req.body.idreview);
-      for (let i = 0; i < result.length; i++) {
-        result[i] = await checkDataComment(result[i], req.session.name);
-      }
     } catch (e) {
       console.log(e);
     }
-    res.send(result);
+    res.status(200).send();
   },
+
   actualizarComment: async (req, res) => {
     let com = new Comment(req.body.idcomment, null, req.body.likes, req.body.dislikes, req.body.denuncias, null, null, null, null);
     let action;
@@ -42,29 +38,44 @@ const comment_functions_controller = {
       console.log("review_controller/actualizarReview - " + e);
     }
     res.status(200).send();
+  },
+
+  obtenerCommentsByIdReview: async (req, res) => {
+    let comments, logs, users;
+    try {
+      users = await functions_user.selectAllUsers();
+      comments = await functions_comment.selectCommentsByIdReview(req.query.idreview);
+      logs = await functions_log.selectByNicknameAndReactionsCommentLog(req.session.name, req.query.idmovie);
+      for (let i = 0; i < comments.length; i++) {
+        comments[i] = checkDataComment(comments[i], logs, users);
+      }
+    } catch (e) {
+      console.log("review_controller/obtenerCommentsByIdReview - " + e);
+    }
+    res.status(200).send(comments);
   }
 }
 
-async function checkDataComment(c, nickname) {
-  let user;
-  try {
-    user = (await functions_user.selectByIdUser(c.getIdUsuario))[0];
-    let text = ["denunciado el", "reaccionado con un like al", "reaccionado con un dislike al"];
-    let propiedades = ["mostrarBotonDenuncia", "mostrarBotonLike", "mostrarBotonDislike"];
-    let res;
-    if(c.denuncias>=20){c.visible=false;}
-    for (let i = 0; i < 3; i++) {
-      res = await functions_log.selectByNicknameAndReactionsCommentLog(nickname, c.getId, text[i]);
-      if (res.rowCount == 0) {
-        c[propiedades[i]] = true;
-      } else {
-        c[propiedades[i]] = false;
-      }
+function checkDataComment(c, logs, users) {
+  let text = ["denunciado el", "reaccionado con un like al ", "reaccionado con un dislike al"];
+  let propiedades = ["mostrarBotonDenuncia", "mostrarBotonLike", "mostrarBotonDislike"];
+  
+  if (c.denuncias >= 20) { c.visible = false; }
+  
+  c[propiedades[0]] = true;
+  c[propiedades[1]] = true;
+  c[propiedades[2]] = true;
+
+  for (let i = 0; i < logs.length; i++) {
+    if (logs[i].accion.includes(text[0]) && logs[i].accion.includes(c.id)) {
+      c[propiedades[0]] = false;
     }
-  } catch (e) {
-    console.log("movie_controller/checkDataComment - " + e);
+    if ((logs[i].accion.includes(text[1]) || logs[i].accion.includes(text[2])) && logs[i].accion.includes(c.id)) {
+      c[propiedades[1]] = false;
+      c[propiedades[2]] = false;
+    }
   }
-  c.nickname = user.getNickname;
+  c.nickname = users[c.getIdUsuario].getNickname;
   c.setFechaPub = general_functions.date_format(c.getFechaPub);
   return c;
 }

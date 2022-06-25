@@ -121,6 +121,22 @@ const functions_movie = {
     let Url = 'https://api.themoviedb.org/3/movie/' + id + '?api_key=77c55698b8c9956169a37ddda45c6409&language=es-MX';
     let result = await requestKey(Url);
     return result;
+  },
+
+  selectAllMovies: async () => {
+    try {
+      let client = await connection.connect();
+      let sql = "SELECT * FROM pelicula";
+      let result = {};
+      let resultQuery = await client.query(sql);
+      resultQuery.rows.forEach(movie => {
+        result[movie.id]=(new Movie(movie.id, movie.puntuacion, movie.nresenas));
+      })
+      client.release(true);
+      return result;
+    } catch (e) {
+      console.log("models/movie/selectAllMovies - "+e);
+    }
   }
 }
 

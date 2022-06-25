@@ -1,24 +1,21 @@
 const { Movie, functions_movie } = require('../models/movie');
 const { Log, functions_log } = require('../models/log');
-const { Review, functions_review } = require('../models/review');
+/*const { Review, functions_review } = require('../models/review');
 const { User, functions_user } = require('../models/user');
 const { Comment, functions_comment } = require('../models/comment');
-const general_functions = require('./general_functions');
+const general_functions = require('./general_functions');*/
 
 const movie_functions_controller = {
   cargarPelicula: async (req, res) => {
-    let movie, newLog, reviews;
+    let movie, newLog, movies;
     if (req.session.loggedin) {
-        try {
-          movie = await functions_movie.peliculaById(req.query.id);
-          reviews = await functions_review.getAllReviewsByIdMovie(Number(req.query.id));
-          for (let i = 0; i < reviews.length; i++) {
-            reviews[i] = await checkDataReview(reviews[i], req.session.name);
-          }
-          movie = await checkDataMovie(movie);
-        } catch (e) {
-          console.log("movie_controller/cargarPelicula - " + e);
-        }
+      try {
+        movie = await functions_movie.peliculaById(req.query.id);
+        movies = await functions_movie.selectAllMovies();
+        movie = checkDataMovie(movie, movies);
+      } catch (e) {
+        console.log("movie_controller/cargarPelicula - " + e);
+      }
       if (req.session.authorize_log_movie) {
         try {
           newLog = new Log(null, req.session.name, null, "Read movie", movie.id, 'El usuario ha consultado la pelicula: ' + movie.title);
@@ -33,8 +30,7 @@ const movie_functions_controller = {
         login: true,
         name: req.session.name,
         idusuario: req.session.idusuario,
-        movie,
-        reviews,
+        movie
       });
     } else {
       res.render("intermedio", {
@@ -48,11 +44,9 @@ const movie_functions_controller = {
         timer: false,
         ruta: '',
         idusuario: -1,
-        movie,
-        reviews,
+        movie
       });
     }
-    //res.send(movie);
   },
   obtenerPeliculasPorNombre: async (req, res) => {
     let movies;
@@ -73,8 +67,10 @@ const movie_functions_controller = {
     res.send(movies);
   }
 }
+//---------------------------------------------------------------------
+//FUNCIONES AUXILIARES
 
-async function checkDataMovie(movie) {
+function checkDataMovie(movie, movies) {
   if (!movie.title) {
     movie.title = "??";
   }
@@ -112,78 +108,17 @@ async function checkDataMovie(movie) {
     movie.release_date = "-";
   }
 
-  let result;
-
-  try {
-    result = await functions_movie.selectMovieById(movie.id);
-    if (result.length > 0) {
-      movie.vote_average = Math.round(result[0].getPuntuacion * 10) / 10;
-      movie.num_reviews = result[0].getNresenas;
-    } else {
-      movie.vote_average = "-";
-      movie.num_reviews = 0;
-    }
-  } catch (e) {
-    console.log(e);
+  if (movies[movie.id] != undefined) {
+    movie.vote_average = Math.round(movies[movie.id].getPuntuacion * 10) / 10;
+    movie.num_reviews = movies[movie.id].getNresenas;
+  } else {
+    movie.vote_average = "-";
+    movie.num_reviews = 0;
   }
-
   if (!movie.overview) {
     movie.overview = "-";
   }
-
   return movie;
-}
-
-async function checkDataReview(r, nickname) {
-  let user;
-  try {
-    user = (await functions_user.selectByIdUser(r.getIdUsuario))[0];
-    r.comments = await functions_comment.selectCommentsByIdReview(r.getId);
-    for(let i = 0; i<r.comments.length; i++){
-      r.comments[i] = await checkDataComment(r.comments[i], nickname)
-    }
-    let text = ["denunciado", "reaccionado con un like a", "reaccionado con un dislike a"];
-    let propiedades = ["mostrarBotonDenuncia", "mostrarBotonLike", "mostrarBotonDislike"];
-    let res;
-    if(r.denuncias>=20){r.visible=false;}
-    for (let i = 0; i < 3; i++) {
-      res = await functions_log.selectByNicknameAndReactionsReviewLog(nickname, r.getId, text[i]);
-      if (res.rowCount == 0) {
-        r[propiedades[i]] = true;
-      } else {
-        r[propiedades[i]] = false;
-      }
-    }
-  } catch (e) {
-    console.log(e)
-  }
-  r.nickname = user.getNickname;
-  r.setFechapub = general_functions.date_format(r.getFechapub);
-  return r;
-}
-
-async function checkDataComment(c, nickname) {
-  let user;
-  try {
-    user = (await functions_user.selectByIdUser(c.getIdUsuario))[0];
-    let text = ["denunciado el", "reaccionado con un like al", "reaccionado con un dislike al"];
-    let propiedades = ["mostrarBotonDenuncia", "mostrarBotonLike", "mostrarBotonDislike"];
-    let res;
-    if(c.denuncias>=20){c.visible=false;}
-    for (let i = 0; i < 3; i++) {
-      res = await functions_log.selectByNicknameAndReactionsCommentLog(nickname, c.getId, text[i]);
-      if (res.rowCount == 0) {
-        c[propiedades[i]] = true;
-      } else {
-        c[propiedades[i]] = false;
-      }
-    }
-  } catch (e) {
-    console.log("movie_controller/checkDataComment - " + e);
-  }
-  c.nickname = user.getNickname;
-  c.setFechaPub = general_functions.date_format(c.getFechaPub);
-  return c;
 }
 
 module.exports = movie_functions_controller;

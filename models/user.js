@@ -113,10 +113,10 @@ const functions_user = {
   selectAllUsers: async () => {
     let client = await connection.connect();
     let sql = "SELECT * FROM usuario";
-    let result = []
+    let result = {}
     let res = await client.query(sql);
     res.rows.forEach(element => {
-      result.push(new User(element.id, element.nickname, element.correo, element.password, element.tipousuario));
+      result[element.id] = (new User(element.id, element.nickname, element.correo, element.password, element.tipousuario));
     });
     client.release(true);
     return result;

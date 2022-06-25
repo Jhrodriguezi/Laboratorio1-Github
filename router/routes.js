@@ -19,6 +19,10 @@ routes.get('/logout', main_controller.cerrarSesion);
 routes.get('/search', movie_controller.cargarPelicula);
 //Toma un nombre y obtiene las peliculas que concuerden con el nombre.
 routes.get('/search/movies', movie_controller.obtenerPeliculasPorNombre);
+//Recupera las reseñas de una pelicula
+routes.get('/movie/reviews', review_controller.obtenerReviewsByIdMovie);
+//Recupera los comentarios de una reseña
+routes.get('/movie/review/comments', comment_controller.obtenerCommentsByIdReview);
 //Retorna las peliculas más populares
 routes.get('/search/movies/popular', movie_controller.obtenerPeliculasPopulares);
 //Renderiza el formulario de reseña y envia algunos datos de utilidad (idpeliculas e idusuario)

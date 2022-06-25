@@ -112,24 +112,32 @@ const functions_log = {
     return result;
   },
 
-  selectByNicknameAndReactionsReviewLog: async (nickname, idreview, text) => {
+  selectByNicknameAndReactionsReviewLog: async (nickname, idmovie) => {
     try {
       let client = await connection.connect();
-      let sql = "SELECT * FROM log WHERE usuario= '" + nickname + "' and accion LIKE 'El usuario ha " + text + " la reseña: " + idreview+"'";
-      let values = [nickname, text, idreview];
-      let result = await client.query(sql);
+      let sql = "SELECT * FROM log WHERE usuario= $1 and idpelicula=$2 and operacion LIKE 'Update table review; aumento de los contadores'";
+      let values = [nickname, idmovie];
+      let resultQuery = await client.query(sql, values);
+      let result = [];
+      resultQuery.rows.forEach(element => {
+        result.push(new Log(element.id, element.usuario, element.fecha, element.operacion, element.idpelicula, element.accion));
+      });
       client.release(true);
       return result;
     } catch (e) {
       console.log("models/log/selectByNicknameAndReactionsReviewLog - " + e);
     }
   },
-  selectByNicknameAndReactionsCommentLog: async (nickname, idcomment, text) => {
+  selectByNicknameAndReactionsCommentLog: async (nickname, idmovie) => {
     try {
       let client = await connection.connect();
-      let sql = "SELECT * FROM log WHERE usuario='"+nickname+"' and accion LIKE 'El usuario ha " + text + " comentario: "+idcomment+"'";
-      let values = [nickname, text, idcomment];
-      let result = await client.query(sql);
+      let sql = "SELECT * FROM log WHERE usuario= $1 and idpelicula=$2 and operacion LIKE 'Update table comment; aumento de los contadores'";
+      let values = [nickname, idmovie];
+      let resultQuery = await client.query(sql, values);
+      let result = [];
+      resultQuery.rows.forEach(element => {
+        result.push(new Log(element.id, element.usuario, element.fecha, element.operacion, element.idpelicula, element.accion));
+      });
       client.release(true);
       return result;
     } catch (e) {
