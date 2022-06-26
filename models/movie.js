@@ -4,11 +4,13 @@ const connection = require('./db');
 
 class Movie {
   #id;
+  #name;
   #puntuacion;
   #nresenas;
 
-  constructor(id, puntuacion, nresenas) {
+  constructor(id, name, puntuacion, nresenas) {
     this.id = id;
+    this.name = name;
     this.puntuacion = puntuacion;
     this.nresenas = nresenas;
   }
@@ -19,6 +21,14 @@ class Movie {
 
   set setId(id) {
     this.id = id;
+  }
+
+  get getName(){
+    return this.name;
+  }
+
+  set setName(name){
+    this.name = name;
   }
 
   get getPuntuacion() {
@@ -64,8 +74,8 @@ const functions_movie = {
   insertMovie: async (movie_object) => {
     try {
       let client = await connection.connect();
-      let sql = "INSERT INTO pelicula (id, puntuacion, nresenas) values($1, $2, $3)";
-      let values = [movie_object.getId, movie_object.getPuntuacion, movie_object.getNresenas];
+      let sql = "INSERT INTO pelicula (id, name, puntuacion, nresenas) values($1, $2, $3, $4)";
+      let values = [movie_object.getId, movie_object.getName, movie_object.getPuntuacion, movie_object.getNresenas];
       let result = await client.query(sql, values);
       client.release(true);
       return result;
@@ -80,7 +90,7 @@ const functions_movie = {
       let values = [id];
       let result = [];
       (await client.query(sql, values)).rows.forEach(movie => {
-        result.push(new Movie(movie.id, movie.puntuacion, movie.nresenas));
+        result.push(new Movie(movie.id, movie.name, movie.puntuacion, movie.nresenas));
       })
       client.release(true);
       return result;
@@ -130,7 +140,7 @@ const functions_movie = {
       let result = {};
       let resultQuery = await client.query(sql);
       resultQuery.rows.forEach(movie => {
-        result[movie.id]=(new Movie(movie.id, movie.puntuacion, movie.nresenas));
+        result[movie.id]=(new Movie(movie.id, movie.name, movie.puntuacion, movie.nresenas));
       })
       client.release(true);
       return result;

@@ -93,6 +93,7 @@ async function crearbd(){
     // crear tabla pelicula
     client.query(`create table pelicula(
         id              bigint primary key,
+        name            varchar(60),
         puntuacion      decimal,
         nresenas        bigint
         );`

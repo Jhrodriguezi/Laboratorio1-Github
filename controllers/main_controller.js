@@ -1,5 +1,7 @@
 const { Log, functions_log } = require('../models/log');
 const { Movie, functions_movie} = require('../models/movie');
+const { User, functions_user} = require('../models/user');
+const { Review, functions_review} = require('../models/review');
 
 const main_functions = {
   cerrarSesion: (req, res) => {
@@ -74,8 +76,56 @@ const main_functions = {
       });
     }
   },
-  cargarHistorialResenas: (req, res) => {
-    res.render("historial");
+  cargarHistorialResenas: async (req, res) => {
+    if (req.session.loggedin) {
+      if(req.session.role=="user"){
+        let reviews, total_count;
+        try{
+          reviews = await functions_review.getAllReviewsByIdUser(req.session.idusuario);
+          total_count = await functions_review.getAmountReactionsByIdUser(req.session.idusuario);
+        }catch(err){
+          console.log("controllers/main_controller/cargarHistorialResenas - "+err);
+        }
+        res.render("historial", {
+          alert: false,
+          alertTitle: "",
+          alertMessage: "",
+          alertIcon: 'error',
+          showConfirmButton: true,
+          ruta: '',
+          login: true,
+          name: req.session.name,
+          reviews: reviews,
+          total_count: total_count
+        });
+      }else{
+        res.render("historial", {
+          alert: true,
+          alertTitle: "Error",
+          alertMessage: "No tiene los permisos para acceder a este recurso",
+          alertIcon: 'error',
+          showConfirmButton: true,
+          ruta: '',
+          login: true,
+          name: req.session.name,
+          reviews: [],
+          total_count: {}
+        });
+      }
+    }else{
+      res.render("historial", {
+        alert: true,
+        alertTitle: "Error",
+        alertMessage: "Tiene que identificarse para acceder",
+        alertIcon: 'error',
+        showConfirmButton: true,
+        ruta: '',
+        login: false,
+        name: "",
+        reviews: [],
+        total_count: {}
+      });
+    }
   },
   cargarTendencias: (req, res) => {
     res.render("tendencias");
@@ -83,8 +133,52 @@ const main_functions = {
   cargarEstadisticasPelicula: (req, res) => {
     res.render("movie-statistics");
   },
-  cargarTablaAdmin: (req, res) => {
-    res.render("admin-table");
+  cargarTablaAdmin: async (req, res) => {
+    if (req.session.loggedin) {
+      if(req.session.role=="admin"){
+        let users;
+        try{
+          users = await functions_user.selectAllUsersForTableAdmin();
+        }catch(err){
+          console.log("controllers/main_controller/cargarTablaAdmin - "+err);
+        }
+        res.render("admin-table", {
+          alert: false,
+          alertTitle: "",
+          alertMessage: "",
+          alertIcon: 'error',
+          showConfirmButton: true,
+          ruta: '',
+          login: true,
+          name: req.session.name,
+          users: users
+        });
+      }else{
+        res.render("admin-table", {
+          alert: true,
+          alertTitle: "Error",
+          alertMessage: "No tiene los permisos para acceder a este recurso",
+          alertIcon: 'error',
+          showConfirmButton: true,
+          ruta: '',
+          login: true,
+          name: req.session.name,
+          users: undefined
+        });
+      }
+    }else{
+      res.render("admin-table", {
+        alert: true,
+        alertTitle: "Error",
+        alertMessage: "Tiene que identificarse para acceder",
+        alertIcon: 'error',
+        showConfirmButton: true,
+        ruta: '',
+        login: false,
+        name: "",
+        users: undefined
+      });
+    }
   }
 }
 

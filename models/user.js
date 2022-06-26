@@ -122,6 +122,22 @@ const functions_user = {
     return result;
   },
 
+  selectAllUsersForTableAdmin: async () => {
+    try {
+      let client = await connection.connect();
+      let sql = "SELECT id, nickname, tipousuario FROM usuario where tipousuario!='admin'";
+      let result = []
+      let res = await client.query(sql);
+      res.rows.forEach(element => {
+        result.push(new User(element.id, element.nickname, "N/A", "N/A", element.tipousuario));
+      });
+      client.release(true);
+      return result;
+    } catch (err) {
+      console.log("models/user/selectAllUsersForTableAmin - "+err);
+    }
+  },
+
   selectByIdUser: async (id) => {
     let client = await connection.connect();
     let sql = "SELECT * FROM usuario where id=$1";
@@ -148,5 +164,9 @@ const functions_user = {
     return result;
   }
 }
+
+/*functions_user.insertUser(new User(null, "admin", 'N/A', "admin123", "admin")).then(r => {
+  console.log("HECHO");
+}).catch();*/
 
 module.exports = { User, functions_user };

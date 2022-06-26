@@ -1,4 +1,5 @@
 const connection = require('./db');
+const general_functions = require('../controllers/general_functions');
 
 class Review {
   #id;
@@ -211,6 +212,53 @@ const functions_review = {
       console.log(e);
     }
   },
+  getAllReviewsByIdUser: async (iduser)=>{
+    try {
+      let client = await connection.connect();
+      let sql = "SELECT R.id, R.encabezado, R.fechapub, R.contenido, R.likes, R.dislikes, R.puntuacion, P.name as movie_name FROM resena R INNER JOIN pelicula P on R.idpelicula = P.id where R.idusuario=$1";
+      let values = [iduser];
+      let result = [], resp, resp_comment, count={};
+      resp = await client.query(sql, values);
+      sql = "SELECT idresena, count(*) as num_comments FROM comentario group by idresena";
+      resp_comment = await client.query(sql);
+      resp_comment.rows.forEach(element => {
+        count[element.idresena] = element.num_comments;
+      });
+      resp.rows.forEach(element => {
+        element.fechapub = general_functions.date_format(element.fechapub);
+        if(count[element.id]){
+          element['num_comments'] = count[element.id];
+        }else{
+          element['num_comments'] = 0;
+        }
+        result.push(element);
+      });
+      client.release(true);
+      return result;
+    } catch (e) {
+      console.log("models/review/getAllReviewsByIdUser - "+e);
+    }
+  },
+
+  getAmountReactionsByIdUser: async (iduser) => {
+    try{
+      let client = await connection.connect();
+      let sql = "SELECT SUM(likes) as total_likes, SUM(dislikes) as total_dislikes from resena where idusuario=$1";
+      let values = [iduser]
+      let resp, result= {};
+      resp = await client.query(sql,values);
+      result['total_reactions'] = Number(resp.rows[0].total_likes) + Number(resp.rows[0].total_dislikes);
+      sql = "SELECT COUNT(*) as total_comments from resena R INNER JOIN comentario C on C.idresena = R.id where R.idusuario = $1;"
+      resp = await client.query(sql,values);
+      result['total_comments'] = resp.rows[0].total_comments;
+      client.release(true);
+      return result;
+    }catch(e){
+      console.log("models/review/getAmountReactionsByIdUser - "+e);
+    }
+    
+  },
+  
   getCountReviewsByIdMovie: async (idpelicula) =>{
     try {
       let client = await connection.connect();

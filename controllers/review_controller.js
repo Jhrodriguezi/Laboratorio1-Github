@@ -11,13 +11,13 @@ const review_functions_controller = {
     try {
       let rm = (await functions_movie.selectMovieById(req.body.idpelicula)).length;
       if (rm == 0) {
-        newMovie = new Movie(req.body.idpelicula, 0, 0);
+        newMovie = new Movie(req.body.idpelicula, req.body.name_movie, 0, 0);
         await functions_movie.insertMovie(newMovie);
       }
       result = await functions_review.insertReview(newReview);
       nresenas = await functions_review.getCountReviewsByIdMovie(req.body.idpelicula);
       puntuacion = await functions_review.getAverageMovie(req.body.idpelicula);
-      newMovie = new Movie(req.body.idpelicula, puntuacion, nresenas);
+      newMovie = new Movie(req.body.idpelicula, req.body.name_movie, puntuacion, nresenas);
       await functions_movie.updateMovie(newMovie);
     } catch (err) {
       result = undefined;
