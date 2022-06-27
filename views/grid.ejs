@@ -23,26 +23,24 @@
          <div class="container">
             <table style="width: 100%;">
                <tr style="width: 100%;">
-                  <td style="width: 50%;">
+                  <td style="width: 60%;">
                      <a href="/home" style="text-decoration:none;">
                         <h1 style="color: #FFFFFF;">PELISLINE</h1>
                      </a>
                   </td>
-                 <% if(role=="user"){ %>
-                 <td>
-                   <a href="/user/history" style="text-decoration:none;"><h1 style="color: #FFFFFF;"> Historial</h1></a>
-                 </td>
-                <% } else if (role=="analyst"){ %>
-                <td>
-                   <a href="/tendencias" style="text-decoration:none;"><h1 style="color: #FFFFFF;"> Tendencias</h1></a>
-                 </td>
-                 <% } %>
                   <% if(login){ %>
-                  <td style="width:50%; text-align:right;padding-bottom: 10px;padding-right: 50px;">
+                  <td style="text-align:right;padding-bottom: 10px;padding-right: 10px; width:20%;">
                      <h2 style="color: gainsboro;"><%=name%></h2>
                   </td>
-                  <td style="width: 50%; text-align: right;">
-                     <a style="text-decoration: none;" href="/logout"><button type="button" class="btn btn-secondary">Cerrar Sesion</button></a>
+                  <td style="max-width:65px; width:20%; text-align: right;">
+                     <div class="btn-group" role="group">
+                        <% if(role=="user"){ %>
+                        <a href="/user/history" style="text-decoration:none;"><button type="button" class="btn btn-primary">Historial</button></a>
+                        <% } else if (role=="analyst"){ %>
+                        <a href="/tendencias" style="text-decoration:none;"><button type="button" class="btn btn-primary">Tendencia</button></a>
+                        <% } %>
+                        <a style="text-decoration: none;" href="/logout"><button type="button" class="btn btn-secondary">Cerrar Sesion</button></a>
+                     </div>
                   </td>
                   <% } %>
                </tr>
