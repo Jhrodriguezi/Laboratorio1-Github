@@ -1,3 +1,7 @@
+let all_users = document.getElementsByClassName('fila_user');
+let busquedaUser = document.getElementById('BuscarUsuario');
+let tbody = document.getElementById('data');
+
 function updateRolUser(iduser){
   let inputUser = document.getElementById('user_'+iduser);
   let inputAnalyst = document.getElementById('analyst_'+iduser);
@@ -25,3 +29,22 @@ function updateRolUser(iduser){
       .catch(e => {console.log("js/functions_table_admin - "+e)});
   }
 }
+
+const resolve = (event) => {
+  if (event.target.value.length > 0) {
+    for(let i = 0; i < all_users.length; i++){
+if(!all_users[i].cells[0].outerText.toLowerCase().includes(event.target.value.toLowerCase())){
+        all_users[i].style.display = "none";
+      }else{
+        all_users[i].style.display = "";
+      }
+    }
+  }else{
+    for(let i = 0; i < all_users.length; i++){
+        all_users[i].style.display = "";
+    }
+  }
+}
+
+
+busquedaUser.addEventListener("keyup", resolve);

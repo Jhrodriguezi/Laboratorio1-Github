@@ -72,11 +72,11 @@
                               </th>
                            </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="data">
                            <% if(users) { %>
                            <% users.forEach(user => { %>
-                           <tr>
-                              <td name="name" scope="row"><h4><%= user.nickname %></h4></td>
+                           <tr id="<%=user.id%>" class="fila_user" value="<%=user.id%>">
+                              <td id="name_<%=user.id%>" name="name" scope="row" value="<%=user.nickname%>"><h4><%= user.nickname %></h4></td>
                               <td name="tipousuario" scope="row"><h4 id="tipousuario_<%=user.id%>"><%= user.tipousuario %></h4></td>
                               <td>
                                  <div class="form-check-<%=user.id%>">
