@@ -35,7 +35,7 @@ routes.get('/statistics/movie', main_controller.cargarEstadisticasPelicula);
 routes.get('/admin', main_controller.cargarTablaAdmin);
 
 
-
+routes.get('/data/tendencias', main_controller.obtenerDatosTendencia);
 
 
 
@@ -51,5 +51,7 @@ routes.post("/comment_create", comment_controller.agregarComment);
 routes.post('/update/review', review_controller.actualizarReview);
 //Actualiza los contadores like, dislike y denuncia
 routes.post('/update/comment', comment_controller.actualizarComment);
+//Actualiza el rol del usuario
+routes.post('/update/user/rol', user_controller.actualizarRolUser)
 
 module.exports = routes;

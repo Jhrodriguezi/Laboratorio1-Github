@@ -30,6 +30,7 @@ const movie_functions_controller = {
         login: true,
         name: req.session.name,
         idusuario: req.session.idusuario,
+        role: req.session.role,
         movie
       });
     } else {

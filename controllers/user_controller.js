@@ -116,6 +116,15 @@ const user_functions_controller = {
       }
     }
   },
+
+  actualizarRolUser: async(req, res) => {
+    try{
+      await functions_user.updateRoleUser(req.body.idusuario, req.body.newrole);
+    }catch(err){
+      console.log("controllers/user_controller/actualizarRolUser - "+err);
+    }
+    res.status(200).send();
+  }
 };
 
 module.exports = user_functions_controller;

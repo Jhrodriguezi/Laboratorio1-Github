@@ -30,30 +30,37 @@
 
             <table style="width: 100%;">
                 <tr style="width: 100%;">
-                    <td style="width: 50%;">
+                    <td style="width: 50%; text-align:left;">
                         <a href="/home" style="text-decoration:none;">
                             <h1 style="color: #FFFFFF;">PELISLINE</h1>
                         </a>
                     </td>
-
+                    <% if(login) { %>
                     <td style="width:50%; text-align:right;padding-bottom: 10px;padding-right: 50px;">
-                        <h2 style="color: gainsboro;">demiGod</h2>
+                        <h2 style="color: gainsboro;"><%= name %></h2>
                     </td>
                     <td style="width: 50%; text-align: right;">
                         <a style="text-decoration: none;" href="/logout"><button type="button"
                                 class="btn btn-secondary">Cerrar Sesion</button></a>
                     </td>
-
+                  <% } %>
                 </tr>
             </table>
-
-
-            <table style="width: 80%;">
-
+        </div>
+    </div>
+    <div class="container">
+      <a href="/home">
+            <button type="button" class="btn btn-primary" style="margin-bottom:20px; margin-top:50px;">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+               </svg>
+               Inicio
+            </button>
+         </a>
+            <table style="width: 100%;margin-top:30px;">
                 <tr>
                     <th>
                         <h2>Caracteristica</h2>
-
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="Caracteristica" id="Caracteristica1"
                                 checked>
@@ -73,14 +80,13 @@
                                 Reseñas realizadas
                             </label>
                         </div>
-
-
-
                     </th>
-                    <th rowspan="2" style="text-align: center;">
+                    <th rowspan="2" style="text-align: center; width:70%">
+                      <div style="display: grid; place-content: center;">
                         <h2>Cuadro de datos</h2>
 
                         <canvas id="cuadro"></canvas>
+                      </div>
                     </th>
                 </tr>
 
@@ -120,8 +126,22 @@
 
 
         </div>
-    </div>
-
 </body>
-
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <% if(alert) { %>
+      <script>
+         Swal.fire({
+            title: '<strong><%= alertTitle %></strong>',
+            icon: '<%= alertIcon %>',
+            html: '<h6><%= alertMessage %></h6>',
+            showCloseButton: true,
+            showCancelButton: false,
+            focusConfirm: false,
+            showConfirmButton: <%=showConfirmButton%>,
+         }).then(() => {
+               window.location = '/<%= ruta %>'
+            })
+      </script>
+      <% } %>
 </html>

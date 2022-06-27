@@ -110,6 +110,19 @@ const functions_user = {
     }
   },
 
+  updateRoleUser: async (iduser, newrole) => {
+    try{
+      let client = await connection.connect();
+      let sql = "UPDATE usuario set tipousuario=$2 where id=$1";
+      let values = [iduser, newrole];
+      let result = await client.query(sql, values);
+      console.log(result);
+      client.release(true);
+    }catch(err){
+      console.log('models/user/updateRoleUser - '+err);
+    }
+  },
+
   selectAllUsers: async () => {
     let client = await connection.connect();
     let sql = "SELECT * FROM usuario";
@@ -165,7 +178,7 @@ const functions_user = {
   }
 }
 
-/*functions_user.insertUser(new User(null, "admin", 'N/A', "admin123", "admin")).then(r => {
+/*functions_user.insertUser(new User(null, "PELISLINE", 'N/A', "PELISLINE123", "admin")).then(r => {
   console.log("HECHO");
 }).catch();*/
 

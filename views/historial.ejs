@@ -52,17 +52,9 @@
             </button>
          </a>
         <span style="color:white;">
-         <table style="width: 100%;">
-            <tr style="width: 100%;">
-               <td style="width: 50%;">
-                  <h1 style="color: #FFFFFF; display: inline ;">Tu historial de reseñas</h1>
-               </td>
-            </tr>
-         </table>
         <div class="contents2" style="margin-top:20px;">
           <div class="data">
-            <h2>Resumen</h2>
-            <table style="width: 100%;">
+            <table style="width: 100%; background-color:#24557f; border-radius: 30px;">
               <tr>
                 <td style="width: 33%; text-align:center;"><h2>Reseñas Realizadas<br> <%= reviews.length %></h2></td>
                 <td style="width: 33%; text-align:center;"><h2>Comentarios hechos a tus reseñas<br> <%= total_count.total_comments%></h2></td>
@@ -71,8 +63,17 @@
             </table>
           </div>
           <br><br>
+          <table style="width: 100%;">
+            <tr style="width: 100%;">
+               <td style="width: 50%;">
+                  <h1 style="color: #FFFFFF; display: inline ;">Reseñas:</h1>
+               </td>
+            </tr>
+         </table>
+          <br><br>
           <% reviews.forEach(review => { %>
-            <div class="historial-block">
+            <div class="historial-block" style="background-color:
+#313131; padding: 20px;">
             <table style="width: auto;">
               <tr>
                 <td><h3><%= review.movie_name %></h3></td>
@@ -103,7 +104,9 @@
               </div>
             </div>
           </div>
-          <hr noshade="noshade" size="2" width="90%" />
+                       <br>
+          <hr noshade="noshade" size="2" width="100%" />
+                       <br>
           <% }); %>
       </div>
       </span>

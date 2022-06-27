@@ -143,6 +143,51 @@ const functions_log = {
     } catch (e) {
       console.log("models/log/selectByNicknameAndReactionsCommentLog - " + e);
     }
+  },
+  selectAllLogIn: async () => {
+    try{
+      let client = await connection.connect();
+      let sql = "SELECT * FROM log WHERE accion LIKE 'Ha ingresado%'";
+      let resultQuery = await client.query(sql);
+      let result = [];
+      resultQuery.rows.forEach(element => {
+        result.push(new Log(element.id, element.usuario, element.fecha, element.operacion, element.idpelicula, element.accion));
+      });
+      client.release(true);
+      return result;
+    }catch(err){
+      console.log('models/log/selectAllLogIn - '+err);
+    }
+  },
+  selectAllSearches: async () => {
+    try{
+      let client = await connection.connect();
+      let sql = "SELECT * FROM log WHERE accion LIKE 'El usuario ha consultado%'";
+      let resultQuery = await client.query(sql);
+      let result = [];
+      resultQuery.rows.forEach(element => {
+        result.push(new Log(element.id, element.usuario, element.fecha, element.operacion, element.idpelicula, element.accion));
+      });
+      client.release(true);
+      return result;
+    }catch(err){
+      console.log('models/log/selectAllLogIn - '+err);
+    }
+  },
+  selectAllInsertReviews: async () => {
+    try{
+      let client = await connection.connect();
+      let sql = "SELECT * FROM log WHERE accion LIKE 'El usuario ha reseñado%'";
+      let resultQuery = await client.query(sql);
+      let result = [];
+      resultQuery.rows.forEach(element => {
+        result.push(new Log(element.id, element.usuario, element.fecha, element.operacion, element.idpelicula, element.accion));
+      });
+      client.release(true);
+      return result;
+    }catch(err){
+      console.log('models/log/selectAllLogIn - '+err);
+    }
   }
 }
 

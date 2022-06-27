@@ -208,33 +208,35 @@ function enviarFormulario(idreview) {
 //Cargar datos
 
 function cargarReviews() {
-  let params = new URLSearchParams(location.search);
-  let idpelicula = params.get('id');
-  let main_container = document.getElementById('main_container');
-  let idusuario = document.getElementById('movie_idusuario').value;
-  let innerHTML = "";
-  axios.get('/movie/reviews?idmovie=' + idpelicula)
-    .then(res => {
-      if (res.data.length > 0) {
-        innerHTML = `<div id="div_reviews" class="row row-cols-1" style="margin-bottom: 20px; border: 10px solid #313131; border-radius: 20px; color:white; background-color:#313131;">`;
-        let disabled_like, disabled_dislike, disabled_denuncia;
-        res.data.forEach(review => {
-          if (review.mostrarBotonLike) {
-            disabled_like = "";
-          } else {
-            disabled_like = "disabled='true'";
-          }
-          if (review.mostrarBotonDislike) {
-            disabled_dislike = "";
-          } else {
-            disabled_dislike = "disabled='true'";
-          }
-          if (review.mostrarBotonDenuncia) {
-            disabled_denuncia = "";
-          } else {
-            disabled_denuncia = "disabled='true'";
-          }
-          innerHTML += `<div class="col" style="margin:0px 20px 20px 20px; padding:0px 20px 20px 20px;">
+  let role = document.getElementById('role').value;
+  if (role == "user") {
+    let params = new URLSearchParams(location.search);
+    let idpelicula = params.get('id');
+    let main_container = document.getElementById('main_container');
+    let idusuario = document.getElementById('movie_idusuario').value;
+    let innerHTML = "";
+    axios.get('/movie/reviews?idmovie=' + idpelicula)
+      .then(res => {
+        if (res.data.length > 0) {
+          innerHTML = `<div id="div_reviews" class="row row-cols-1" style="margin-bottom: 20px; border: 10px solid #313131; border-radius: 20px; color:white; background-color:#313131;">`;
+          let disabled_like, disabled_dislike, disabled_denuncia;
+          res.data.forEach(review => {
+            if (review.mostrarBotonLike) {
+              disabled_like = "";
+            } else {
+              disabled_like = "disabled='true'";
+            }
+            if (review.mostrarBotonDislike) {
+              disabled_dislike = "";
+            } else {
+              disabled_dislike = "disabled='true'";
+            }
+            if (review.mostrarBotonDenuncia) {
+              disabled_denuncia = "";
+            } else {
+              disabled_denuncia = "disabled='true'";
+            }
+            innerHTML += `<div class="col" style="margin:0px 20px 20px 20px; padding:0px 20px 20px 20px;">
                <div class="row row-cols-2">
                   <div class="col">
                      <h2>${review.encabezado}</h2>
@@ -307,16 +309,17 @@ function cargarReviews() {
                <div id="div_comentarios_${review.id}">
                </div>
               </div>`
-        });
-        innerHTML += `</div>`;
-      } else {
-        innerHTML = `<h1 style="text-align: center; color:white;margin-top: 80px;">NO HAY RESEÑAS PARA ESTA PELICULA :(</h1>`;
-      }
-      main_container.innerHTML += innerHTML;
-    })
-    .catch(err => {
-      console.log('frontend/funcion_botones/cargarReviews - ' + err);
-    });
+          });
+          innerHTML += `</div>`;
+        } else {
+          innerHTML = `<h1 style="text-align: center; color:white;margin-top: 80px;">NO HAY RESEÑAS PARA ESTA PELICULA :(</h1>`;
+        }
+        main_container.innerHTML += innerHTML;
+      })
+      .catch(err => {
+        console.log('frontend/funcion_botones/cargarReviews - ' + err);
+      });
+  }
 
 }
 

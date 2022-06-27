@@ -32,25 +32,34 @@
                      <h1 style="color: #FFFFFF;">PELISLINE</h1>
                   </a>
                </td>
+              <% if(login){ %>
                <td style="width:50%; text-align:right;padding-bottom: 10px;padding-right: 50px;">
-                  <h2 style="color: gainsboro;">nombre</h2>
+                  <h2 style="color: gainsboro;"><%=name%></h2>
                </td>
                <td style="width: 50%; text-align: right;">
                   <a style="text-decoration: none;" href="/logout"><button type="button"
                         class="btn btn-secondary">Cerrar Sesion</button></a>
                </td>
-               </td>
+              <% } %>
             </tr>
          </table>
       </div>
    </div>
    <div class="container" style="margin-top:30px;">
-      </a>
+     
+      <a href="/search?id=<%=id_movie%>">
+            <button type="button" class="btn btn-primary" style="margin-bottom:20px;">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+               </svg>
+               Regresar
+            </button>
+         </a>
       <table style="width: 100%;">
          <tr style="width: 100%;">
             <td style="width: 50%;">
                <h2 style="color: #FFFFFF; display:inline;"> Estadisticas de: </h2>
-               <h2 style="color: #FFFFFF; display:inline;"> Nombre Pelicula </h2>
+               <h2 style="color: #FFFFFF; display:inline;"> <%= movie_name %> </h2>
             </td>
          </tr>
       </table>
@@ -66,32 +75,48 @@
             </thead>
             <tbody>
                <tr>
-                  <th scope="row">Puntuaciones de reseñas</th>
-                  <td>media punt</td>
-                  <td>mediana punt</td>
-                  <td>moda punt</td>
+                  <th scope="row" style="text-align:center;"><h2>Puntuaciones de reseñas</h2></th>
+                  <td style="text-align:center;"><h2><%=media.media_puntuacion%></h2></td>
+                  <td style="text-align:center;"><h2><%= mediana.mediana_puntuacion %></h2></td>
+                  <td style="text-align:center;"><h2><%= moda.moda_puntuacion %></h2></td>
+               </tr>
+               <tr style="color:white;">
+                  <th scope="row" style="text-align:center;"><h2>Likes en las reseñas</h2></th>
+                  <td style="text-align:center;"><h2><%=media.media_likes%></h2></td>
+                  <td style="text-align:center;"><h2><%= mediana.mediana_likes %></h2></td>
+                  <td style="text-align:center;"><h2><%= moda.moda_likes %></h2></td>
                </tr>
                <tr>
-                  <th scope="row">Likes en las reseñas</th>
-                  <td>media likes</td>
-                  <td>mediana likes</td>
-                  <td>moda likes</td>
+                  <th scope="row" style="text-align:center;"><h2>Dislikes en las reseñas</h2></th>
+                  <td style="text-align:center;"><h2><%=media.media_dislikes%></h2></td>
+                  <td style="text-align:center;"><h2><%= mediana.mediana_dislikes %></h2></td>
+                  <td style="text-align:center;"><h2><%= moda.moda_dislikes %></h2></td>
                </tr>
-               <tr>
-                  <th scope="row">Dislikes en las reseñas</th>
-                  <td>media dislikes</td>
-                  <td>mediana dislikes</td>
-                  <td>moda dislikes</td>
-               </tr>
-               <tr>
-                  <th scope="row">Denuncias en las reseñas</th>
-                  <td>media denuncias</td>
-                  <td>mediana denunc</td>
-                  <td>moda denunc</td>
+               <tr style="color:white;">
+                  <th scope="row" style="text-align:center;"><h2>Denuncias en las reseñas</h2></th>
+                  <td style="text-align:center;"><h2><%=media.media_denuncias%></h2></td>
+                  <td style="text-align:center;"><h2><%= mediana.mediana_denuncias %></h2></td>
+                  <td style="text-align:center;"><h2><%= moda.moda_denuncias %></h2></td>
                </tr>
             </tbody>
          </table>
       </div>
    </div>
-
+  </body>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <% if(alert) { %>
+      <script>
+         Swal.fire({
+            title: '<strong><%= alertTitle %></strong>',
+            icon: '<%= alertIcon %>',
+            html: '<h6><%= alertMessage %></h6>',
+            showCloseButton: true,
+            showCancelButton: false,
+            focusConfirm: false,
+            showConfirmButton: <%=showConfirmButton%>,
+         }).then(() => {
+               window.location = '/<%= ruta %>'
+            })
+      </script>
+      <% } %>
 </html>

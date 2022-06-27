@@ -14,7 +14,7 @@ class Review {
   #idusuario;
   #idpelicula;
 
-  constructor(id, encabezado, contenido, likes, dislikes, denuncias, fechapub, puntuacion, visible, idusuario, idpelicula){
+  constructor(id, encabezado, contenido, likes, dislikes, denuncias, fechapub, puntuacion, visible, idusuario, idpelicula) {
     this.id = id;
     this.encabezado = encabezado;
     this.contenido = contenido;
@@ -142,11 +142,11 @@ class Review {
   set setIdPelicula(idpelicula) {
     this.idpelicula = idpelicula;
   }
-  
+
 }
 
 const functions_review = {
-  insertReview: async (review_object)=>{
+  insertReview: async (review_object) => {
     try {
       let client = await connection.connect();
       let sql = "INSERT INTO resena (encabezado, contenido, likes, dislikes, denuncias, fechapub, puntuacion, visible, idusuario, idpelicula) values($1, $2, $3, $4, $5, now(), $6, TRUE, $7, $8)";
@@ -196,7 +196,7 @@ const functions_review = {
       console.log(e);
     }
   },
-  getAllReviewsByIdMovie: async (idpelicula)=>{
+  getAllReviewsByIdMovie: async (idpelicula) => {
     try {
       let client = await connection.connect();
       let sql = "SELECT * FROM resena WHERE idpelicula=$1";
@@ -212,12 +212,12 @@ const functions_review = {
       console.log(e);
     }
   },
-  getAllReviewsByIdUser: async (iduser)=>{
+  getAllReviewsByIdUser: async (iduser) => {
     try {
       let client = await connection.connect();
       let sql = "SELECT R.id, R.encabezado, R.fechapub, R.contenido, R.likes, R.dislikes, R.puntuacion, P.name as movie_name FROM resena R INNER JOIN pelicula P on R.idpelicula = P.id where R.idusuario=$1";
       let values = [iduser];
-      let result = [], resp, resp_comment, count={};
+      let result = [], resp, resp_comment, count = {};
       resp = await client.query(sql, values);
       sql = "SELECT idresena, count(*) as num_comments FROM comentario group by idresena";
       resp_comment = await client.query(sql);
@@ -226,9 +226,9 @@ const functions_review = {
       });
       resp.rows.forEach(element => {
         element.fechapub = general_functions.date_format(element.fechapub);
-        if(count[element.id]){
+        if (count[element.id]) {
           element['num_comments'] = count[element.id];
-        }else{
+        } else {
           element['num_comments'] = 0;
         }
         result.push(element);
@@ -236,30 +236,30 @@ const functions_review = {
       client.release(true);
       return result;
     } catch (e) {
-      console.log("models/review/getAllReviewsByIdUser - "+e);
+      console.log("models/review/getAllReviewsByIdUser - " + e);
     }
   },
 
   getAmountReactionsByIdUser: async (iduser) => {
-    try{
+    try {
       let client = await connection.connect();
       let sql = "SELECT SUM(likes) as total_likes, SUM(dislikes) as total_dislikes from resena where idusuario=$1";
       let values = [iduser]
-      let resp, result= {};
-      resp = await client.query(sql,values);
+      let resp, result = {};
+      resp = await client.query(sql, values);
       result['total_reactions'] = Number(resp.rows[0].total_likes) + Number(resp.rows[0].total_dislikes);
       sql = "SELECT COUNT(*) as total_comments from resena R INNER JOIN comentario C on C.idresena = R.id where R.idusuario = $1;"
-      resp = await client.query(sql,values);
+      resp = await client.query(sql, values);
       result['total_comments'] = resp.rows[0].total_comments;
       client.release(true);
       return result;
-    }catch(e){
-      console.log("models/review/getAmountReactionsByIdUser - "+e);
+    } catch (e) {
+      console.log("models/review/getAmountReactionsByIdUser - " + e);
     }
-    
+
   },
-  
-  getCountReviewsByIdMovie: async (idpelicula) =>{
+
+  getCountReviewsByIdMovie: async (idpelicula) => {
     try {
       let client = await connection.connect();
       let sql = "SELECT count(*) as count FROM resena WHERE idpelicula=$1";
@@ -275,7 +275,7 @@ const functions_review = {
       console.log(e);
     }
   },
-  getAverageMovie: async (idpelicula)=>{
+  getAverageMovie: async (idpelicula) => {
     try {
       let client = await connection.connect();
       let sql = "SELECT avg(puntuacion) as average FROM resena WHERE idpelicula=$1";
@@ -283,10 +283,151 @@ const functions_review = {
       let result, resp;
       resp = await client.query(sql, values);
       resp.rows.forEach(element => {
-        result= element.average;
+        result = element.average;
       });
       client.release(true);
       return result;
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
+  getModaByIdMovie: async (id) => {
+    try {
+      let client = await connection.connect();
+      let sql = "SELECT puntuacion, count(puntuacion) as c FROM resena WHERE idpelicula=$1 group by puntuacion order by c desc";
+      let values = [id];
+      let result_moda = {}, resp;
+      resp = await client.query(sql, values);
+
+      if (resp.rowCount > 0) {
+        result_moda['moda_puntuacion'] = resp.rows[0].puntuacion;
+      } else {
+        result_moda['moda_puntuacion'] = "-";
+      }
+
+
+      sql = "SELECT likes, count(likes) as c FROM resena WHERE idpelicula=$1 group by likes order by c desc";
+      resp = await client.query(sql, values);
+
+      if (resp.rowCount > 0) {
+        result_moda['moda_likes'] = resp.rows[0].likes;
+      } else {
+        result_moda['moda_likes'] = "-";
+      }
+
+
+      sql = "SELECT dislikes, count(dislikes) as c FROM resena WHERE idpelicula=$1 group by dislikes order by c desc";
+      resp = await client.query(sql, values);
+    
+      if (resp.rowCount > 0) {
+        result_moda['moda_dislikes'] = resp.rows[0].dislikes;
+      } else {
+        result_moda['moda_dislikes'] = "-";
+      }
+
+      sql = "SELECT denuncias, count(denuncias) as c FROM resena WHERE idpelicula=$1 group by denuncias order by c desc";
+      resp = await client.query(sql, values);
+      if (resp.rowCount > 0) {
+        result_moda['moda_denuncias'] = resp.rows[0].denuncias;
+      } else {
+        result_moda['moda_denuncias'] = "-";
+      }
+
+
+      client.release(true);
+      return result_moda;
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
+  getMedianaByIdMovie: async (id) => {
+    try {
+      let client = await connection.connect();
+      let sql = "select percentile_disc(0.5) within group (order by puntuacion) from resena WHERE idpelicula=$1";
+      let values = [id];
+      let result_mediana = {}, resp;
+      resp = await client.query(sql, values);
+      if (resp.rowCount > 0 && resp.rows[0].percentile_disc!=null) {
+        result_mediana['mediana_puntuacion'] = resp.rows[0].percentile_disc;
+      } else {
+        result_mediana['mediana_puntuacion'] = "-";
+      }
+
+
+      sql = "select percentile_disc(0.5) within group (order by likes) from resena WHERE idpelicula=$1";
+      resp = await client.query(sql, values);
+      if (resp.rowCount > 0 && resp.rows[0].percentile_disc!=null) {
+        result_mediana['mediana_likes'] = resp.rows[0].percentile_disc;
+      } else {
+        result_mediana['mediana_likes'] = "-";
+      }
+
+      sql = "select percentile_disc(0.5) within group (order by dislikes) from resena WHERE idpelicula=$1";
+      resp = await client.query(sql, values);
+      if (resp.rowCount > 0 && resp.rows[0].percentile_disc!=null) {
+        result_mediana['mediana_dislikes'] = resp.rows[0].percentile_disc;
+      } else {
+        result_mediana['mediana_dislikes'] = "-";
+      }
+
+
+      sql = "select percentile_disc(0.5) within group (order by denuncias) from resena WHERE idpelicula=$1";
+      resp = await client.query(sql, values);
+      if (resp.rowCount > 0 && resp.rows[0].percentile_disc!=null) {
+        result_mediana['mediana_denuncias'] = resp.rows[0].percentile_disc;
+      } else {
+        result_mediana['mediana_denuncias'] = "-";
+      }
+
+
+      client.release(true);
+      return result_mediana;
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
+  getMediaByIdMovie: async (id) => {
+    try {
+      let client = await connection.connect();
+      let sql = "select avg(puntuacion) as promedio from resena WHERE idpelicula=$1";
+      let values = [id];
+      let result_media = {}, resp;
+      resp = await client.query(sql, values);
+      if (resp.rowCount > 0 && resp.rows[0].promedio!=null) {
+        result_media['media_puntuacion'] = Math.round(resp.rows[0].promedio * 10) / 10;
+      } else {
+        result_media['media_puntuacion'] = "-";
+      }
+
+      sql = "select avg(likes) as promedio from resena WHERE idpelicula=$1";
+      resp = await client.query(sql, values);
+      if (resp.rowCount > 0 && resp.rows[0].promedio!=null) {
+        result_media['media_likes'] = Math.round(resp.rows[0].promedio * 10) / 10;
+      } else {
+        result_media['media_likes'] = "-";
+      }
+
+      sql = "select avg(dislikes) as promedio from resena WHERE idpelicula=$1";
+      resp = await client.query(sql, values);
+      if (resp.rowCount > 0 && resp.rows[0].promedio!=null) {
+        result_media['media_dislikes'] = Math.round(resp.rows[0].promedio * 10) / 10;
+      } else {
+        result_media['media_dislikes'] = "-";
+      }
+
+      sql = "select avg(denuncias) as promedio from resena WHERE idpelicula=$1";
+      resp = await client.query(sql, values);
+      if (resp.rowCount > 0 && resp.rows[0].promedio!=null) {
+        result_media['media_denuncias'] = Math.round(resp.rows[0].promedio * 10) / 10;
+      } else {
+        result_media['media_denuncias'] = "-";
+      }
+
+      client.release(true);
+      return result_media;
     } catch (e) {
       console.log(e);
     }

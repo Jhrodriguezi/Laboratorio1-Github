@@ -77,17 +77,17 @@
                            <% users.forEach(user => { %>
                            <tr>
                               <td name="name" scope="row"><h4><%= user.nickname %></h4></td>
-                              <td name="tipousuario" scope="row"><h4><%= user.tipousuario %></h4></td>
+                              <td name="tipousuario" scope="row"><h4 id="tipousuario_<%=user.id%>"><%= user.tipousuario %></h4></td>
                               <td>
-                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" <% if(user.tipousuario=="user"){ %>checked<% } %>>
-                                    <label class="form-check-label" for="exampleRadios1">
+                                 <div class="form-check-<%=user.id%>">
+                                    <input class="form-check-input-<%=user.id%>" type="radio" name="input-<%=user.id%>" id="user_<%=user.id%>" value="user" onclick="updateRolUser(<%=user.id%>)" <% if(user.tipousuario=="user"){ %>checked<% } %>>
+                                    <label class="form-check-label-<%=user.id%>" for="exampleRadios1-<%=user.id%>">
                                     User
                                     </label>
                                  </div>
-                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" <% if(user.tipousuario=="analyst"){ %>checked<% } %>>
-                                    <label class="form-check-label" for="exampleRadios2">
+                                 <div class="form-check-<%=user.id%>">
+                                    <input class="form-check-input-<%=user.id%>" type="radio" name="input-<%=user.id%>" id="analyst_<%=user.id%>" value="analyst" onclick="updateRolUser(<%=user.id%>)" <% if(user.tipousuario=="analyst"){ %>checked<% } %>>
+                                    <label class="form-check-label-<%=user.id%>" for="exampleRadios2-<%=user.id%>">
                                     Analyst
                                     </label>
                                  </div>
@@ -118,9 +118,10 @@
             })
       </script>
       <% } %>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
       <link rel="stylesheet" href="/resources/css/bootstrap.css">
       <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
       <link rel="stylesheet" href="/resources/css/bootstrap-theme.min.css">
-      <script type="module" src="/resources/js/consultas_peliculas.js"></script>
+      <script src="/resources/js/functions_table_admin.js"></script>
    </body>
 </html>
