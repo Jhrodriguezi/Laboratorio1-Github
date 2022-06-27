@@ -212,7 +212,7 @@ año_seleccionado.addEventListener('change', (event) => {
   cuadro.update();
 }
 );
-
+inputs_disabled(true);
 axios.get('/data/tendencias')
   .then(res => {
     data_sesiones = res.data.data_sesiones;
@@ -220,8 +220,18 @@ axios.get('/data/tendencias')
     data_reseñas = res.data.data_reseñas;
     data_in_weeks(data_sesiones, 'i');
     cuadro.update();
+    inputs_disabled(false);
   })
   .catch(err => console.log(err));
+
+function inputs_disabled(bool){
+  let inputs = document.getElementsByClassName('form-check-input');
+  for(let i = 0; i<inputs.length; i++){
+    inputs[i].disabled = bool;
+  }
+  
+}
+
 
 function evaluar() {
   switch (cuadro.data.datasets[0].label) {
