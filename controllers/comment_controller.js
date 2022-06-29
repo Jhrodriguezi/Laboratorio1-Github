@@ -55,7 +55,7 @@ const comment_functions_controller = {
     res.status(200).send(comments);
   }
 }
-
+//temp
 function checkDataComment(c, logs, users) {
   let text = ["denunciado el", "reaccionado con un like al ", "reaccionado con un dislike al"];
   let propiedades = ["mostrarBotonDenuncia", "mostrarBotonLike", "mostrarBotonDislike"];
