@@ -15,6 +15,7 @@
       <link rel="stylesheet" href="/resources/css/fontAwesome.css">
       <link rel="stylesheet" href="/resources/css/light-box.css">
       <link rel="stylesheet" href="/resources/css/templatemo-style.css">
+      <link rel="stylesheet" href="/resources/css/resena.css">
       <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
       <script src="/resources/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
    </head>
@@ -23,50 +24,75 @@
          <div class="container">
             <table style="width: 100%;">
                <tr style="width: 100%;">
-                  <td style="width: 60%;">
+                  <td style="width: 50%;">
                      <a href="/home" style="text-decoration:none;">
                         <h1 style="color: #FFFFFF;">PELISLINE</h1>
                      </a>
                   </td>
                   <% if(login){ %>
-                  <td style="text-align:right;padding-bottom: 10px;padding-right: 10px; width:20%;">
+                  <td style="width:50%; text-align:right;padding-bottom: 10px;padding-right: 50px;">
                      <h2 style="color: gainsboro;"><%=name%></h2>
                   </td>
-                  <td style="max-width:65px; width:20%; text-align: right;">
-                     <div class="btn-group" role="group">
-                        <% if(role=="user"){ %>
-                        <a href="/user/history" style="text-decoration:none;"><button type="button" class="btn btn-primary">Historial</button></a>
-                        <% } else if (role=="analyst"){ %>
-                        <a href="/tendencias" style="text-decoration:none;"><button type="button" class="btn btn-primary">Tendencia</button></a>
-                        <% } %>
-                        <a style="text-decoration: none;" href="/logout"><button type="button" class="btn btn-secondary">Cerrar Sesion</button></a>
-                     </div>
+                  <td style="width: 50%; text-align: right;">
+                     <a style="text-decoration: none;" href="/logout"><button type="button" class="btn btn-secondary">Cerrar Sesion</button></a>
                   </td>
                   <% } %>
                </tr>
             </table>
          </div>
       </div>
-      <div class="container">
-         <div class="grid-portfolio" id="portfolio" style="width: 100%; height:100%; padding: 20px 0px;">
-            <div class="row align-items-start" id="div_movies_popular">
-            </div>
-         </div>
+      <div class="container" style="margin-top:50px;">
+         <a href="/search?id=<%=idpelicula%>">
+            <button type="button" class="btn btn-primary" style="margin-bottom:20px; ">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+               </svg>
+               Regresar
+            </button>
+         </a>
+         <table style="width: 100%;">
+            <tr style="width: 100%;">
+               <td style="width: 50%;">
+                  <h2 style="color: #FFFFFF; display: inline ;">Reseñando: </h2>
+                  <h2 style="color: #FFFFFF; display: inline ;"><%=movie_name%></h2>
+               </td>
+            </tr>
+         </table>
       </div>
-      <div class="container">
-         <div class="grid-portfolio" id="portfolio" style="width: 100%; height:100%; padding: 10px 0px;">
-            <form action="javascript:void(0);">
-               <div class="form-group" style="text-align: left; color: #FFFFFF;">
-                  <label for="exampleInputEmail1">Buscar pelicula</label>
-                  <input type="text" class="form-control" id="BusquedaPelicula" aria-describedby="emailHelp" placeholder="Search">
-                  <small id="emailHelp" class="form-text text-muted"">esperemos que exista :3</small>
+      <div class="container" style="margin-top: 20px;">
+         <div class="formulario-reseña">
+            <form method="post" action="/resena_create" onSubmit="document.getElementById('submit').disabled=true;">
+               <input type="text" id="titulo" name="idpelicula" value="<%=idpelicula%>" style="display:none;" />
+               <input type="text" id="titulo" name="idusuario" value="<%=idusuario%>" style="display:none;" />
+              <input type="text" id="titulo" name="name_movie" value="<%=movie_name%>" style="display:none;" />
+               <div>
+                  <label for="Titulo reseña" style="width: 100%">
+                  <span class="required">Titulo reseña: *</span>
+                  <input type="text" id="titulo" name="titulo" value="" placeholder="" required="required"
+                     tabindex="1" autofocus="autofocus" />
+                  </label>
+               </div>
+               <div>
+                  <label for="Calificación" style="width: auto">
+                  <span class="required">Calificación: *</span>
+                  <input type="number" id="calificacion" name="calificacion" value="" placeholder="valor / 5"
+                     required="required" tabindex="2" min="0" max="5" class="Calificación" />
+                  </label>
+               </div>
+               <div>
+                  <label for="Contenido" style="width: 100%">
+                  <span class="required">Contenido: *</span>
+                  <textarea id="contenido" name="contenido" tabindex="3" required="required"
+                     placeholder="Maximo 1000 caracteres" maxlength="1000"></textarea>
+                  </label>
+               </div>
+               <div>
+                  <button name="submit" type="submit" id="submit">Publicar</button>
                </div>
             </form>
-            <div id="ResultadoBusqueda" style="text-align: center;">
-            </div>
          </div>
       </div>
-      <div class="footer-dark" style="margin-top:80px;">
+      <div class="footer-dark" style="margin-top:80px; width:100%; bottom:0px;">
          <footer class="footer-07">
             <div class="container">
                <div class="row mt-5">
@@ -83,6 +109,8 @@
             </div>
          </footer>
       </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+      <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
       <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <% if(typeof alert != "undefined") { %>
       <script>
@@ -100,11 +128,8 @@
          })
       </script>
       <% } %>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
       <script src="/resources/js/vendor/bootstrap.min.js"></script>
       <script src="/resources/js/plugins.js"></script>
       <script src="/resources/js/main.js"></script>
-      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-      <script type="module" src="/resources/js/consultas_peliculas.js"></script>
    </body>
 </html>

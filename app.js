@@ -12,9 +12,6 @@ app.use(express.json());
 //Middleware para lectura de archivos estaticos
 app.use('/resources', express.static(path.resolve(__dirname+'/public')));
 
-//Middleware para los controladores by frontend
-app.use('/controlador', express.static(path.resolve(__dirname+'/controllers')));
-
 //Middleware para el uso de sesiones en express
 app.use(session({
   secret: 'cambiar',

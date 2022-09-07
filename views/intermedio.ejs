@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>Pelisline - Login</title>
+    <link rel="icon" href="/resources/src/bxs-movie.png">
+    <link rel="stylesheet" href="/resources/src/main.css">
+</head>
+<body style="height: 100vh; background-image: url(/resources/img/fondo_redireccionamiento.jpg);">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <% if(typeof alert != "undefined") { %>
+        <script>
+            Swal.fire({
+                title: '<%= alertTitle %>',
+                text: '<%= alertMessage %>',
+                icon: '<%= alertIcon %>',
+                showConfirmButton: <%=showConfirmButton%>,
+                timer: <%=timer%>,
+            }).then(() => {
+                window.location='/<%= ruta %>'
+            })
+        </script>
+    <% } %>
+</body>
+</html>

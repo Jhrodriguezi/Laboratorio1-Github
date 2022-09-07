@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Pelisline</title>
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="apple-touch-icon" href="apple-touch-icon.png">
+      <link rel="icon" href="/resources/src/bxs-movie.png">
+      <link rel="stylesheet" href="/resources/css/bootstrap.css">
+      <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/resources/css/bootstrap-theme.min.css">
+      <link rel="stylesheet" href="/resources/css/fontAwesome.css">
+      <link rel="stylesheet" href="/resources/css/light-box.css">
+      <link rel="stylesheet" href="/resources/css/templatemo-style.css">
+   </head>
+   <body style="background-color: #232323;">
+      <div style="background-color: #313131; width: 100%;">
+         <div class="container">
+            <table style="width: 100%;">
+               <tr style="width: 100%;">
+                  <td style="width: 50%;">
+                     <a href="/home" style="text-decoration:none;">
+                        <h1 style="color: #FFFFFF;">PELISLINE</h1>
+                     </a>
+                  </td>
+                  <% if(login){ %>
+                  <td style="width:50%; text-align:right;padding-bottom: 10px;padding-right: 50px;">
+                     <h2 style="color: gainsboro;"><%=name%></h2>
+                      <input id="movie_idusuario" value="<%=idusuario%>" style="display:none;">
+                  </td>
+                  <td style="width: 50%; text-align: right;">
+                     <a style="text-decoration: none;" href="/logout"><button type="button" class="btn btn-secondary">Cerrar Sesion</button></a>
+                  </td>
+                  <% } %>
+               </tr>
+            </table>
+         </div>
+      </div>
+      <% if(movie){ %>
+      <div id="main_container" class="container" style="margin-top:30px; max-width: 900px;">
+         <a href="/home">
+            <button type="button" class="btn btn-primary" style="margin-bottom:20px;">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+               </svg>
+               Regresar
+            </button>
+         </a>
+         <div class="row row-cols-2">
+            <div class="container" style="text-align: left; max-width: 400px; float:left">
+               <div class="portfolio-item">
+                  <div class="image">
+                     <img src="<%=movie.poster_path%>">
+                  </div>
+               </div>
+            </div>
+            <div class="container" style="max-width:500px; float:left;">
+               <div>
+                  <div>
+                     <span style="color:white;">
+                        <h2 style="color: #FFFFFF; display: inline ;"><%=movie.title%></h2>
+                        <br><br>
+                        <p style="color:white;"><%=movie.overview%></p>
+                        <table style="width: 100%;">
+                           <tr>
+                              <td>
+                                 <h3>Idioma original</h3>
+                                 <p><%=movie.original_language%></p>
+                              </td>
+                              <td>
+                                 <h3>Generos</h3>
+                                 <p><%=movie.genres%></p>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>
+                                 <h3>Titulo original</h3>
+                                 <p><%=movie.original_title%></p>
+                              </td>
+                              <td>
+                                 <h3>Fecha de estreno</h3>
+                                 <p><%=movie.release_date%></p>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>
+                                 <h3>Puntuacion promedio</h3>
+                                 <p><%=movie.vote_average%>/5</p>
+                              </td>
+                              <td>
+                                 <h3>Numero de reseñas</h3>
+                                 <p><%=movie.num_reviews%></p>
+                              </td>
+                           </tr>
+                        </table>
+                     </span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <hr noshade="noshade" size="2" width="80%" />
+         <br>
+         <div class="d-grid gap-2">
+            <% if(role=="analyst"){ %>
+              <a href="/statistics/movie?idmovie=<%=movie.id%>&name_movie=<%=movie.title%>" style="text-decoration:none;">
+               <button style="width:100%;" class="btn btn-success" type="button" style="text-align:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16" style="vertical-align:middle;">
+  <path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
+</svg>
+                  Ver estadisticas
+               </button>
+            </a>
+            <% }else if(role=="user"){ %>
+            <a href="/resena-form?id=<%=movie.id%>" style="text-decoration:none;">
+               <button style="width:100%;" class="btn btn-primary" type="button" style="text-align:center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                  </svg>
+                  Agregar reseña
+               </button>
+            </a>
+            <% } %>
+         </div>
+         <br><br>
+      </div>
+      <% } %>
+      <div class="footer-dark" style="margin-top:80px; width:100%;">
+         <footer class="footer-07">
+            <div class="container">
+               <div class="row mt-5">
+                  <div class="col-md-12 text-center">
+                     <p class="copyright">
+                        Copyright ©<script>document.write(new Date().getFullYear());</script> All rights reserved | This page is made with 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                           <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                        </svg>
+                        by <a target="_blank">PURO PEKA PA</a>
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </footer>
+      </div>
+      <input style="display:none;" id="role" value="<%=role%>">
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      <script src="/resources/js/funcion_botones.js"></script>
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <% if(typeof alert != "undefined") { %>
+      <script>
+         Swal.fire({
+             title: '<strong><%= alertTitle %></strong>',
+             icon: '<%= alertIcon %>',
+             html:'<h6><%= alertMessage %></h6>',
+             showCloseButton: true,
+             showCancelButton: false,
+             focusConfirm: false,
+             showConfirmButton: <%=showConfirmButton%>,
+             timer: <%=timer%>,
+         }).then(() => {
+             window.location='/<%= ruta %>'
+         })
+      </script>
+      <% } %>
+   </body>
+</html>

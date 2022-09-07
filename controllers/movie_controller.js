@@ -1,67 +1,125 @@
-const axios = require('axios');
+const { Movie, functions_movie } = require('../models/movie');
+const { Log, functions_log } = require('../models/log');
+/*const { Review, functions_review } = require('../models/review');
+const { User, functions_user } = require('../models/user');
+const { Comment, functions_comment } = require('../models/comment');
+const general_functions = require('./general_functions');*/
 
-async function masPopulares() {
-    //Construir la url
-    var url= 'https://api.themoviedb.org/3/movie/popular?api_key=8813b9c1e58f9f780d35e52b0ae8f38c&language=es_MX'
-    //Retornar lista de peliculas
-    return await getPelicula(url)
-}
-
-async function buscar(name){
-    //Construir la URL
-    var urlP1= 'https://api.themoviedb.org/3/search/movie?api_key=8813b9c1e58f9f780d35e52b0ae8f38c&language=es-MX&query='
-    var urlP2= '&page=1'
-    name = name.replaceAll(' ','%20')      
-    var url = urlP1 + name + urlP2
-    //Retornar lista de peliculas
-    return await getPelicula(url)
-}
-
-async function getPelicula(url){
-    //Definición de variables
-    var listMovies = []
-    var length = 0
-    //Realizar el request en la api
-    try{
-        var promise = await requestKey(url)
-        //Definir el tamaño de la lista de max 20 peliculas
-        promise['results'].length>20 ? length=20 : length = promise['results'].length
-        //Llenado de lista
-        for (var i=0; i<length; i++){
-            //Crear el objeto película
-            var movie = {
-                adult: promise['results'][i]['adult'],
-                backdrop_path: promise['results'][i]['backdrop_path'],
-                genre_ids: promise['results'][i]['genre_ids'],
-                id: promise['results'][i]['id'],
-                original_language: promise['results'][i]['original_language'],
-                original_title: promise['results'][i]['original_title'],
-                overview: promise['results'][i]['overview'],
-                popularity: promise['results'][i]['popularity'],
-                poster_path: promise['results'][i]['poster_path'],
-                release_date: promise['results'][i]['release_date'],
-                title: promise['results'][i]['title'],
-                video: promise['results'][i]['video'],
-                vote_average: promise['results'][i]['vote_average'],
-                vote_count: promise['results'][i]['vote_count']
-            }
-            //Ingresarlo a la lista
-            listMovies.push(movie)
+const movie_functions_controller = {
+  cargarPelicula: async (req, res) => {
+    let movie, newLog, movies;
+    if (req.session.loggedin) {
+      try {
+        movie = await functions_movie.peliculaById(req.query.id);
+        movies = await functions_movie.selectAllMovies();
+        movie = checkDataMovie(movie, movies);
+      } catch (e) {
+        console.log("movie_controller/cargarPelicula - " + e);
+      }
+      if (req.session.authorize_log_movie) {
+        try {
+          newLog = new Log(null, req.session.name, null, "Read movie", movie.id, 'El usuario ha consultado la pelicula: ' + movie.title);
+          await functions_log.insertLog(newLog);
+          req.session.authorize_log_movie = false;
+        } catch (e) {
+          console.log(e);
         }
-        //Retornar la lista
-        return listMovies
-    }catch(err){
-        console.log(err);
-        return undefined;
+        console.log(newLog);
+      }
+      res.render("movie", {
+        login: true,
+        name: req.session.name,
+        idusuario: req.session.idusuario,
+        role: req.session.role,
+        movie
+      });
+    } else {
+      res.render("intermedio", {
+        login: false,
+        name: "??",
+        alert: true,
+        alertTitle: "Login requerido",
+        alertMessage: "Debe identificarse para acceder a la pagina",
+        alertIcon: 'info',
+        showConfirmButton: true,
+        timer: false,
+        ruta: '',
+        idusuario: -1,
+        movie
+      });
     }
+  },
+  obtenerPeliculasPorNombre: async (req, res) => {
+    let movies;
+    try {
+      movies = await functions_movie.buscar(req.query.name);
+    } catch (e) {
+      console.log(e);
+    }
+    res.send(movies);
+  },
+  obtenerPeliculasPopulares: async (req, res) => {
+    let movies;
+    try {
+      movies = await functions_movie.masPopulares();
+    } catch (e) {
+      console.log(e)
+    }
+    res.send(movies);
+  }
+}
+//---------------------------------------------------------------------
+//FUNCIONES AUXILIARES
+
+function checkDataMovie(movie, movies) {
+  if (!movie.title) {
+    movie.title = "??";
+  }
+
+  if (movie.poster_path) {
+    movie.poster_path = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
+  } else {
+    movie.poster_path = "/resources/img/imagen_no_disponible.png";
+  }
+  if (!movie.original_language) {
+    movie.original_language = "-";
+  }
+
+  if (movie.genres.length > 0) {
+    let string = "";
+    let flag = true;
+    movie.genres.forEach(genre => {
+      if (flag) {
+        string += genre.name;
+        flag = false;
+      } else {
+        string += ", " + genre.name;
+      }
+    })
+    movie.genres = string;
+  } else {
+    movie.genres = "-";
+  }
+
+  if (!movie.original_title) {
+    movie.original_title = "-";
+  }
+
+  if (!movie.release_date) {
+    movie.release_date = "-";
+  }
+
+  if (movies[movie.id] != undefined) {
+    movie.vote_average = Math.round(movies[movie.id].getPuntuacion * 10) / 10;
+    movie.num_reviews = movies[movie.id].getNresenas;
+  } else {
+    movie.vote_average = "-";
+    movie.num_reviews = 0;
+  }
+  if (!movie.overview) {
+    movie.overview = "-";
+  }
+  return movie;
 }
 
-async function requestKey(url) {
-    //Realizar el request
-    try {
-        const resp = await axios.get(url)
-        return resp.data
-    } catch (err) {
-        console.error(err)
-    }
-}
+module.exports = movie_functions_controller;
